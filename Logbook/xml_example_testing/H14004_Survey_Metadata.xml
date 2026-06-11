@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<smd:surveyMetadata xmlns:hsd="http://svn.pydro.noaa.gov/2025/01/AllGlobalTypes" xmlns:smd="http://svn.pydro.noaa.gov/2025/01/SurveyMetadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://svn.pydro.noaa.gov/2025/01/SurveyMetadata http://svn.pydro.noaa.gov/2025/01/SurveyMetadata.xsd">
+    <smd:metadata>
+        <smd:project>
+            <smd:uniqueId>OPR-A366-TJ-25</smd:uniqueId>
+            <smd:name>Gulf of Maine</smd:name>
+            <smd:state>Maine</smd:state>
+        </smd:project>
+        <smd:survey>
+            <smd:uniqueId>H14004</smd:uniqueId>
+            <smd:name>13nm Southwest of Bank Comfort</smd:name>
+        </smd:survey>
+        <smd:date>
+            <smd:utc>-0400</smd:utc>
+            <smd:start>2025-05-06</smd:start>
+            <smd:end>2025-05-08</smd:end>
+        </smd:date>
+        <smd:poc>
+            <smd:responsibleParty>DOC/NOAA/NOS/OCS -- Office of Coast Survey</smd:responsibleParty>
+            <smd:contactInfo>hsd.chief@noaa.gov</smd:contactInfo>
+            <smd:fieldUnit>NOAA Ship Thomas Jefferson (S222)</smd:fieldUnit>
+        </smd:poc>
+        <smd:dataLicense>
+            <hsd:classification>CC0-1.0 (NOAA Field Units)</hsd:classification>
+            <hsd:spdx>
+                <hsd:licenseIdentifier>CC0-1.0</hsd:licenseIdentifier>
+                <hsd:licenseDeed>https://creativecommons.org/publicdomain/zero/1.0/</hsd:licenseDeed>
+                <hsd:legalCode>https://creativecommons.org/publicdomain/zero/1.0/legalcode</hsd:legalCode>
+            </hsd:spdx>
+            <hsd:description>These data were produced by NOAA and are in the public domain within the United States. NOAA waives any potential copyright and related rights in these data worldwide through the Creative Commons Zero 1.0 Universal Public Domain Dedication (CC0).</hsd:description>
+        </smd:dataLicense>
+        <smd:graphics>
+            <smd:overview>file:///Q:/OPR-A366-TJ-25/Surveys/H14004/01_HDR/Reports/Metadata_AHB/Support_Files/OPR-A366-TJ-25_H14004.png</smd:overview>
+            <smd:surveyArea>file:///Q:/OPR-A366-TJ-25/Surveys/H14004/01_HDR/Reports/Metadata_AHB/Support_Files/H14004.png</smd:surveyArea>
+        </smd:graphics>
+        <smd:grid>
+            <smd:gridName>H14004_MB_8m_MLLW_1of1</smd:gridName>
+            <smd:coordinateReferenceSystem>
+                <smd:projection>Projected UTM 19</smd:projection>
+                <smd:horizontal>
+                    <smd:datum>North American Datum 1983 (2011)</smd:datum>
+                    <smd:unit>meters</smd:unit>
+                </smd:horizontal>
+                <smd:vertical>
+                    <smd:datum>Mean Lower Low Water</smd:datum>
+                    <smd:unit>meters</smd:unit>
+                </smd:vertical>
+            </smd:coordinateReferenceSystem>
+            <smd:soundingTechnique>found by multi beam</smd:soundingTechnique>
+            <smd:detection>
+                <smd:significantFeature>Yes</smd:significantFeature>
+                <smd:leastDepth>Yes</smd:leastDepth>
+                <smd:size>
+                    <smd:fixed>2.0m (General 1)</smd:fixed>
+                    <smd:variable>10% (General 1)</smd:variable>
+                </smd:size>
+            </smd:detection>
+            <smd:coverageAssessment>
+                <smd:fullSeafloor>Yes</smd:fullSeafloor>
+                <smd:bathymetric>Yes</smd:bathymetric>
+                <smd:interpolated>No</smd:interpolated>
+            </smd:coverageAssessment>
+            <smd:uncertainty>
+                <smd:horizontal>
+                    <smd:fixed>5m (General 1)</smd:fixed>
+                    <smd:variable>5% (General 1)</smd:variable>
+                </smd:horizontal>
+                <smd:vertical>
+                    <smd:fixed>0.5m (General 1)</smd:fixed>
+                    <smd:variable>1% (General 1)</smd:variable>
+                </smd:vertical>
+            </smd:uncertainty>
+        </smd:grid>
+    </smd:metadata>
+    <smd:equipmentList>
+        <smd:platform>
+            <smd:vessel>
+                <smd:hull>
+                    <smd:idNumber>369958000</smd:idNumber>
+                    <smd:name>S222</smd:name>
+                </smd:hull>
+                <smd:positioningSystem>
+                    <smd:equipment>
+                        <smd:type>Positioning and Attitude System</smd:type>
+                        <smd:manufacturer>Applanix</smd:manufacturer>
+                        <smd:systemName>POS MV 320 v5</smd:systemName>
+                        <smd:modelNumber>POS MV</smd:modelNumber>
+                        <smd:serialNumber>6497</smd:serialNumber>
+                        <smd:calibrationDate>2025-03-11</smd:calibrationDate>
+                    </smd:equipment>
+                </smd:positioningSystem>
+                <smd:depthHeightSensor>
+                    <smd:equipment>
+                        <smd:type>Multibeam</smd:type>
+                        <smd:manufacturer>Kongsberg Maritime</smd:manufacturer>
+                        <smd:systemName>EM 712</smd:systemName>
+                        <smd:modelNumber>EM712</smd:modelNumber>
+                        <smd:serialNumber>10099</smd:serialNumber>
+                        <smd:frequency>40-100kHz</smd:frequency>
+                        <smd:calibrationDate>2025-03-13</smd:calibrationDate>
+                    </smd:equipment>
+                </smd:depthHeightSensor>
+                <smd:soundSpeedSensor>
+                    <smd:equipment>
+                        <smd:type>Conductivity, Temperature, and Depth Sensor</smd:type>
+                        <smd:manufacturer>AML Oceanographic</smd:manufacturer>
+                        <smd:systemName>MVP200</smd:systemName>
+                        <smd:modelNumber>M12981</smd:modelNumber>
+                        <smd:serialNumber>NA</smd:serialNumber>
+                        <smd:frequency>NA</smd:frequency>
+                        <smd:calibrationDate>2025-03-11</smd:calibrationDate>
+                        <smd:accuracyCheckDate>2025-03-11</smd:accuracyCheckDate>
+                    </smd:equipment>
+                    <smd:equipment>
+                        <smd:type>Conductivity, Temperature, and Depth Sensor</smd:type>
+                        <smd:manufacturer>AML Oceanographic</smd:manufacturer>
+                        <smd:systemName>MVP-X</smd:systemName>
+                        <smd:modelNumber>MVP-X CTD</smd:modelNumber>
+                        <smd:serialNumber>9200</smd:serialNumber>
+                        <smd:frequency>NA</smd:frequency>
+                        <smd:calibrationDate>2023-06-07</smd:calibrationDate>
+                        <smd:accuracyCheckDate>2025-03-11</smd:accuracyCheckDate>
+                    </smd:equipment>
+                    <smd:equipment>
+                        <smd:type>Sound Speed System</smd:type>
+                        <smd:manufacturer>Teledyne RESON</smd:manufacturer>
+                        <smd:systemName>SVP 70</smd:systemName>
+                        <smd:modelNumber>SVP 70</smd:modelNumber>
+                        <smd:serialNumber>1013077</smd:serialNumber>
+                        <smd:frequency>NA</smd:frequency>
+                        <smd:calibrationDate>2025-02-06</smd:calibrationDate>
+                    </smd:equipment>
+                </smd:soundSpeedSensor>
+            </smd:vessel>
+        </smd:platform>
+        <smd:controlPoint />
+    </smd:equipmentList>
+    <smd:qualityControlProcedures>
+        <smd:methods>
+            <smd:crossline performed="true">
+                <smd:discussion>
+                    <smd:text>Pydro 24, a suite of software maintained by NOAA's Hydrographic Systems and Technology Branch (HSTB), contains various tools that aid in the analysis and quality control of hydrographic data. A Single Resolution (SR) 8m Combined Uncertainty and Bathymetry Estimator (CUBE) surface of this survey's mainscheme data and a SR 8m CUBE surface of this survey's crossline data were differenced with the Pydro 24 tool "Compare Grids." The results of this comparison indicate that 99.99% of grid-node comparisons between the two surfaces are within the Fraction of Allowable Error for depth/height, exceeding the General 1 specification of 95% stipulated by NOAA's 2025 Hydrographic Surveys Specifications and Deliverables (HSSD). The resulting mean of this comparison was a 0.09m difference, with a standard deviation of 0.31m, verifying the consistency of the data. Vessel S222 collected a total of approximately 21.69 linear nautical miles of MBES crosslines, a figure which constitutes about 6.84% of mainscheme mileage. </smd:text>
+                    <smd:images>
+                        <smd:caption>H14004 Crossline/Mainscheme Comparison Statistics</smd:caption>
+                        <smd:link>file:///Q:/OPR-A366-TJ-25/Surveys/H14004/01_HDR/Reports/Metadata_AHB/Support_Files/H14004_MB_8m_MLLW_Mainscheme-H14004_MB_8m_MLLW_XL_depth_delta_2024.png</smd:link>
+                    </smd:images>
+                    <smd:images>
+                        <smd:caption>H14004 Node Depth vs. Allowable Error Fraction</smd:caption>
+                        <smd:link>file:///Q:/OPR-A366-TJ-25/Surveys/H14004/01_HDR/Reports/Metadata_AHB/Support_Files/H14004_MB_8m_MLLW_Mainscheme-H14004_MB_8m_MLLW_XL_fracAllowErr_vsDepth_Overview.png</smd:link>
+                    </smd:images>
+                </smd:discussion>
+            </smd:crossline>
+            <smd:junctionOverlap performed="true">
+                <smd:discussion>
+                    <smd:text>Survey H14004  junctions with contemporary survey H14003 conducted by NOAA Ship Thomas Jefferson within the project OPR-A366-TJ-25.  A SR CUBE surface of this survey's data was created to be used in the junction comparison with a SR CUBE surface of H14003 data. The Pydro 24 tool "Compare Grids" was utilized to assess the overlap of the junction. </smd:text>
+                </smd:discussion>
+            </smd:junctionOverlap>
+            <smd:statisticalAnalysis performed="true">
+                <smd:discussion>
+                    <smd:text>Statistical analysis of grid layers was conducted to assess the quality of the bathymetric data. The "Grid QC" program contained within NOAA's Pydro 24 QC Tools was used to assess grid density and uncertainty against allowable standards specified in NOAA's 2025 HSSD. This survey was assigned quality metrics of "General 1," and the delivered grids meet the specified standards. Information about uncertainty values used for data processing can be found within the Caris HIPS &amp; SIPS processing project and in the associated Hydrographic Vessel File (HVF) for the survey platform.</smd:text>
+                    <smd:images>
+                        <smd:caption>Data Density Histogram for H14004</smd:caption>
+                        <smd:link>file:///Q:/OPR-A366-TJ-25/Surveys/H14004/01_HDR/Reports/Metadata_AHB/Support_Files/H14004_MB_8m_MLLW_Final_1of1.QAv7.density.png</smd:link>
+                    </smd:images>
+                    <smd:images>
+                        <smd:caption>Histogram of H14004 node uncertainty as a fraction of allowable TVU</smd:caption>
+                        <smd:link>file:///Q:/OPR-A366-TJ-25/Surveys/H14004/01_HDR/Reports/Metadata_AHB/Support_Files/H14004_MB_8m_MLLW_Final_1of1.QAv7.tvu_qc.gn1.png</smd:link>
+                    </smd:images>
+                </smd:discussion>
+            </smd:statisticalAnalysis>
+            <smd:directedEditing performed="true">
+                <smd:discussion>
+                    <smd:text>After initial collection, MBES data underwent a thorough process of editing and inspection to clean gridded surfaces of erroneous fliers that inaccurately affected seabed measurements, and to ensure that no systematic errors were present. Teledyne's CARIS software was used to generate and examine the depth, uncertainty, standard deviation, and hypothesis count layers of an 8m CUBE surface, which guided visual inspection of the data. In addition, the Pydro 24 tool "Flier Finder" analyzes the grids for anomalous data (fliers) and was utilized to guide editing. After thorough data cleaning, "Flier Finder" identified six fliers in the surface of H14004 that meet General 1 metrics. After review, the field unit believes that this flagged data accurately represents the surveyed bathymetry.</smd:text>
+                </smd:discussion>
+            </smd:directedEditing>
+            <smd:holidayIdentification performed="true">
+                <smd:discussion>
+                    <smd:text>Survey coverage was assessed daily by the field unit as part of night processing to identify data gaps to be addressed. Gaps in coverage that are larger than the 2025 HSSD specifications are known as holidays. Various methods were utilized to aid in holiday identification including visual inspection and NOAA's Pydro 24 QC Tools program "Holiday Finder". "Holiday Finder" is most commonly used for holiday identification in areas of 100% bathymetric (MBES) coverage. The hydrographer in puts a CUBE surface and the tool returns a number of files which can be used in Caris HIP &amp; SIPS for holiday analysis. and acquisition planning. No holidays were found. </smd:text>
+                </smd:discussion>
+            </smd:holidayIdentification>
+            <smd:surveyAdequacy performed="true">
+                <smd:discussion>
+                    <smd:text>The data in this survey was acquired in accordance with requirements set forth in the 2025 HSSD. This survey is adequate to supersede previous data. </smd:text>
+                </smd:discussion>
+            </smd:surveyAdequacy>
+            <smd:imageryCoverage performed="false">
+                <smd:discussion>
+                    <smd:text>Imagery coverage assessment was not performed for this survey</smd:text>
+                </smd:discussion>
+            </smd:imageryCoverage>
+            <smd:dataInterpolation performed="false">
+                <smd:discussion>
+                    <smd:text>Data interpolation was not performed for this survey</smd:text>
+                </smd:discussion>
+            </smd:dataInterpolation>
+            <smd:backscatter performed="true">
+                <smd:calibration>N/A</smd:calibration>
+                <smd:dynamicRange>
+                    <smd:discussion>
+                        <smd:text>The installed EM712 has a wide dynamic range that accommodated the survey area. The system setting were held constant throughout acquisition and therefore no calibration was necessary. The frequency was held constant at the 70-100kHz setting for all acquisition. The "depth mode" in SIS-5 (Seafloor Information Systems, Kongsberg's acquisition software) was maintained at the "shallow" setting. Only continuous wave pulse forms were used across the three  multibeam sectors.</smd:text>
+                    </smd:discussion>
+                </smd:dynamicRange>
+                <smd:acquisitionConfiguration>
+                    <smd:discussion>
+                        <smd:text>The acquisition configuration discussed in the Dynamic Range section above ensured that the sonar did not become saturated or nonlinear in the survey area. All multibeam acquisition was guided by the addendum "Best Practices for Acquiring Backscatter in Hydrographic Multibeam Surveys," provided in the appendix of the project instructions.</smd:text>
+                    </smd:discussion>
+                </smd:acquisitionConfiguration>
+                <smd:environmentalVariable>
+                    <smd:discussion>
+                        <smd:text>Environmental factors influenced the acoustic backscatter collection and analysis. A turbulent sea state impacted backscatter quality and resulted in prominent motion artifacts in the backscatter mosaic. The degradation of survey conditions was combated as much as possible with decreased ship speed and the prioritization of substantial overlap when planning survey lines.</smd:text>
+                    </smd:discussion>
+                </smd:environmentalVariable>
+                <smd:acquisitionOutput>
+                    <smd:discussion>
+                        <smd:text>Backscatter was processed on a daily basis to ensure quality. Please refer to Section 4.3.2.1.2, "Acoustic Backscatter Imagery" of the Office of Coast Survey's 2021 Field Procedures Manual for the backscatter post processing workflow used.</smd:text>
+                    </smd:discussion>
+                </smd:acquisitionOutput>
+            </smd:backscatter>
+        </smd:methods>
+    </smd:qualityControlProcedures>
+    <smd:controlPointEstablishment />
+    <smd:reportOfSurvey>
+        <smd:HSSD>
+            <smd:version>2025-0-00</smd:version>
+        </smd:HSSD>
+        <smd:uncertaintySource>
+            <smd:discussion>
+                <smd:text>Information about uncertainty values used for data processing can be found within the Caris HIPS &amp; SIPS processing project and in the associated Hydrographic Vessel File (HVF) for the survey platform. Uncertainty results for H14004 can be found in the Statistical Analysis section of Quality Control Procedures in this document.</smd:text>
+            </smd:discussion>
+        </smd:uncertaintySource>
+        <smd:errorSource>
+            <smd:discussion>
+                <smd:text>Foul weather encountered during data collection negatively impacted the backscatter mosaic of this survey. The data submitted nevertheless meets assigned quality metrics.</smd:text>
+            </smd:discussion>
+        </smd:errorSource>
+        <smd:unusualConditions />
+        <smd:junctionAnalysis>
+            <smd:discussion>
+                <smd:text>The results of the junction comparison between the surfaces of Survey H14004 and Survey H14003 indicate that 100% of grid-node comparisons between these surfaces are within Fraction of Allowable Error standards for depth/height for the assigned quality metric of "General 1," exceeding the specification of 95% stipulated by NOAA's 2025 HSSD. The resulting mean of this comparison was a 0.12m difference, with a standard deviation of 0.39m, which is within allowable TVU for the area.
+
+H14004 does not have full MBES coverage on the southernmost edge of the sheet limits. This area has full MBES coverage with multibeam line 042 in Sheet H14003, with the junction analysis exceeding HSSD standards.</smd:text>
+                <smd:images>
+                    <smd:caption>Junction Analysis for H14004 and H14003</smd:caption>
+                    <smd:link>file:///Q:/OPR-A366-TJ-25/Surveys/H14004/01_HDR/Reports/Metadata_AHB/Support_Files/H14003_MB_8m_MLLW_1of1_Final-H14004_MB_8m_MLLW_Final_1of1_depth_delta_2024.png</smd:link>
+                </smd:images>
+                <smd:images>
+                    <smd:caption>Node Depth vs. Allowable Error Fraction for H14004 and H14003</smd:caption>
+                    <smd:link>file:///Q:/OPR-A366-TJ-25/Surveys/H14004/01_HDR/Reports/Metadata_AHB/Support_Files/H14003_MB_8m_MLLW_1of1_Final-H14004_MB_8m_MLLW_Final_1of1_fracAllowErr_vsDepth_Overview.png</smd:link>
+                </smd:images>
+            </smd:discussion>
+        </smd:junctionAnalysis>
+        <smd:additionalInformation />
+        <smd:PIAlteration>
+            <smd:discussion>
+                <smd:text>On April 14, 2025, the field unit was granted permission to update the sheet limits of survey H14004 beyond those that were initially stipulated in the project instructions.</smd:text>
+            </smd:discussion>
+        </smd:PIAlteration>
+        <smd:supplementals>
+            <smd:document>
+                <smd:subject>Final Survey Outline</smd:subject>
+                <smd:submissionDate>2025-05-09</smd:submissionDate>
+            </smd:document>
+            <smd:document>
+                <smd:subject>Trained Marine Mammal Observers list</smd:subject>
+                <smd:submissionDate>2025-04-13</smd:submissionDate>
+            </smd:document>
+            <smd:document>
+                <smd:subject>NCEI Sound Speed Data</smd:subject>
+                <smd:submissionDate>2025-05-12</smd:submissionDate>
+            </smd:document>
+            <smd:document>
+                <smd:subject>Coast Pilot Report</smd:subject>
+                <smd:submissionDate>2025-05-22</smd:submissionDate>
+            </smd:document>
+        </smd:supplementals>
+    </smd:reportOfSurvey>
+    <smd:personnel>
+        <smd:approvalStatement>As Chief of Party, field operations for this hydrographic survey were conducted under my direct supervision, with frequent personal checks of progress and adequacy. I have reviewed and approved all data and metadata. The survey meets or exceeds requirements as set forth in the Project Instructions and NOS Hydrographic Surveys Specifications and Deliverables. The survey is complete and no additional work is required with the exception of any deficiencies noted in the Report of Survey.</smd:approvalStatement>
+        <smd:approver>
+            <smd:name>CDR Megan R. Guberski</smd:name>
+            <smd:title>Commanding Officer</smd:title>
+        </smd:approver>
+        <smd:teamMember>
+            <smd:name>HST Alessandra M. DiTommaso</smd:name>
+            <smd:title>Sheet Manager</smd:title>
+        </smd:teamMember>
+    </smd:personnel>
+</smd:surveyMetadata>

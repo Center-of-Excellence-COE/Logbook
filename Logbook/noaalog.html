@@ -4,257 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NOAA - Tier - Logbook</title>
-    <style>
-        :root {
-            --primary: #0055a4; /* NOAA Blue */
-            --secondary: #00a9e0;
-            --background: #f4f7f6;
-            --text: #333;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--background);
-            color: var(--text);
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .header-flex {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .header-buttons {
-            display: flex;
-            gap: 10px;
-        }
-        h1, h2, h3 {
-            color: var(--primary);
-            margin-top: 0;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .full-width {
-            grid-column: 1 / -1;
-        }
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .tooltip-label {
-            cursor: help;
-            border-bottom: 1px dotted var(--primary);
-            display: inline-block;
-        }
-        input[type="text"], input[type="email"], input[type="date"], input[type="number"], select, textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-family: inherit;
-        }
-        select[multiple] {
-            height: 100px;
-        }
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        .grid-3 {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 15px;
-        }
-        .grid-4 {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr;
-            gap: 15px;
-        }
-        .date-range-flex {
-            display: flex;
-            gap: 5px;
-        }
-        button, .btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 4px;
-            font-size: 16px;
-            margin-top: 10px;
-            display: inline-block;
-            text-align: center;
-        }
-        button:hover, .btn:hover {
-            background-color: var(--secondary);
-        }
-        .import-btn {
-            background-color: #f39c12;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .import-btn:hover {
-            background-color: #e67e22;
-        }
-        .xml-btn {
-            background-color: #17a2b8; /* Teal color to distinguish */
-            color: white;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .xml-btn:hover {
-            background-color: #138496;
-        }
-        .export-btn {
-            background-color: #28a745;
-            width: 100%;
-            font-size: 18px;
-            padding: 15px;
-            margin-bottom: 10px;
-        }
-        .export-btn:hover {
-            background-color: #218838;
-        }
-        .cert-btn {
-            background-color: #8e44ad; 
-            width: 100%;
-            font-size: 18px;
-            padding: 15px;
-        }
-        .cert-btn:hover {
-            background-color: #732d91;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            font-size: 13px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: var(--primary);
-            color: white;
-        }
-        .section-box {
-            border: 2px solid #e0e0e0;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 6px;
-            background-color: #fafafa;
-            position: relative;
-        }
-        .help-text {
-            font-size: 12px;
-            color: #666;
-            margin-top: -3px;
-            margin-bottom: 8px;
-            display: block;
-        }
-        
-        .hour-toggles {
-            margin-top: 8px;
-            font-size: 13px;
-            background: #fff;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .hour-toggles label {
-            display: inline-block;
-            font-weight: normal;
-            margin-bottom: 2px;
-            cursor: pointer;
-        }
-        .weekend-toggles {
-            display: none;
-            margin-top: 8px;
-            font-size: 13px;
-            background: #e9ecef;
-            padding: 8px;
-            border-radius: 4px;
-            border-left: 3px solid var(--secondary);
-        }
-
-        .dropdown-checklist {
-            position: relative;
-            display: block;
-            width: 100%;
-            margin-top: 5px;
-            user-select: none;
-        }
-        .dropdown-checklist .anchor {
-            cursor: pointer;
-            display: block;
-            padding: 6px 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            background: #e9ecef;
-            color: #495057;
-            font-size: 13px;
-            font-weight: bold;
-        }
-        .dropdown-checklist .anchor:hover {
-            background: #dde2e6;
-        }
-        .dropdown-checklist ul.items {
-            padding: 10px;
-            margin: 0;
-            border: 1px solid #ccc;
-            border-top: none;
-            display: none;
-            position: absolute;
-            background: white;
-            z-index: 100;
-            width: 100%;
-            box-sizing: border-box;
-            max-height: 200px;
-            overflow-y: auto;
-            list-style: none;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border-radius: 0 0 4px 4px;
-        }
-        .dropdown-checklist ul.items li {
-            margin-bottom: 6px;
-            font-size: 14px;
-        }
-        .dropdown-checklist ul.items li label {
-            font-weight: normal;
-            cursor: pointer;
-            display: block;
-            margin: 0;
-        }
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-    </style>
+    
+    <script src="https://unpkg.com/docx@7.1.0/build/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    
+    <link rel="stylesheet" href="noaalog.css">
 </head>
 <body>
 
@@ -262,14 +16,32 @@
     
     <div class="header-flex">
         <div>
-            <h1>NOAA - Tier - Logbook</h1>
+            <h1>NOAA - Tier - Logbook <span id="app-version">v0.1</span></h1>
             <p style="margin:0; color:#555;">Track daily log entries and compile them into a Project JSON.</p>
         </div>
         <div class="header-buttons">
-            <label for="importXMLFile" class="xml-btn">📄 Load NOAA XML</label>
-            <input type="file" id="importXMLFile" accept=".xml" style="display: none;" onchange="loadNOAAXML(event)">
+            
+            <div class="dropdown">
+                <button onclick="toggleTopMenu('loadDropdownMenu')" class="btn btn-load dropbtn">📄 LOAD ▼</button>
+                <div id="loadDropdownMenu" class="dropdown-content">
+                    <a href="#" onclick="document.getElementById('importXMLFile').click()" title="This import works for DR's prior to 2024 and Metadata reports up to 2026 if there are any issue please submit a bug report">NOAA - OCS - Metadata/DR ℹ️</a>
+                    <a href="#" onclick="document.getElementById('importXMLFile').click()" title="Currently only supports Project Instructions from 2026. Updates will be needed for older or future PIs.">NOAA-OCS-XML: Project Instructions 2026 ℹ️</a>
+                    <div class="dropdown-divider">Existing Progress</div>
+                    <a href="#" onclick="document.getElementById('importFile').click()">Load Logbook JSON</a>
+                </div>
+            </div>
 
-            <label for="importFile" class="import-btn">📂 Load Existing JSON</label>
+            <div class="dropdown">
+                <button onclick="toggleTopMenu('exportDropdownMenu')" class="btn btn-export dropbtn">💾 EXPORT ▼</button>
+                <div id="exportDropdownMenu" class="dropdown-content">
+                    <a href="#" onclick="exportProjectJSON()">Logbook JSON</a>
+                    <a href="#" onclick="exportLogbookCSV()">Logbook CSV</a>
+                    <a href="#" onclick="exportLogbookDoc()">Logbook Doc</a>
+                    <a href="#" onclick="convertToCertificationJSON()">Convert to Certification JSON</a>
+                </div>
+            </div>
+
+            <input type="file" id="importXMLFile" accept=".xml" style="display: none;" onchange="loadNOAAXML(event)">
             <input type="file" id="importFile" accept=".json" style="display: none;" onchange="loadProjectJSON(event)">
         </div>
     </div>
@@ -292,12 +64,26 @@
         <h2>2. Add / Edit Log Entry</h2>
         
         <datalist id="orgOptions">
-            <option value="NOAA - OMAO - MO-Science">
             <option value="NOAA Ship - Thomas Jefferson">
-            <option value="NOAA OCS">
+            <option value="NOAA Ship - Fairweather">
+            <option value="NOAA Ship - Rainier">
+            <option value="NOAA Ship - Ferdinand R. Hassler">
+            <option value="NOAA Ship - Nancy Foster">
+            <option value="NOAA - OMAO - MO-Science">
+            <option value="NOAA UxS">
+            <option value="NOAA - OCS - Hydrographic Systems and Technology Branch (HSTB)">
+            <option value="NOAA - OCS - Navigation Response Branch (NRB)">
+            <option value="NOAA - OCS - Atlantic Hydrographic Branch (AHB)">
+            <option value="NOAA - OCS - Pacific Hydrographic Branch (PHB)">
+            <option value="NOAA - OCS - Center of Excellence (CoE)">
+            <option value="University of New Hampshire (CCOM/JHC)">
+            <option value="U.S. Coast Guard">
+            <option value="U.S. Navy">
+            <option value="Enemy of the State">
+            <option value="Private Industry / Contractor">
         </datalist>
 
-        <div class="grid-2">
+        <div class="grid-3">
             <div class="form-group">
                 <label for="projectName">Project Name / Cruise</label>
                 <input type="text" id="projectName" placeholder="e.g., OPR-P356-FA-24">
@@ -305,6 +91,10 @@
             <div class="form-group">
                 <label for="jobTitle">Job Title</label>
                 <input type="text" id="jobTitle" placeholder="e.g., Tier 1 Mapping Specialist">
+            </div>
+            <div class="form-group">
+                <label for="geographicLocation">Geographic Location</label>
+                <input type="text" id="geographicLocation" placeholder="e.g., Gulf of Maine, Maine">
             </div>
             <div class="form-group full-width">
                 <label for="projectDescription">Project Description</label>
@@ -316,10 +106,10 @@
 
         <div class="grid-4">
             <div class="form-group">
-                <label for="organization" class="tooltip-label" title="Pick the organization that employs you for each mission. For example, if you are a person employed by a Ship put the ship. If you are augmenting on the ship and doing another job put that other job as the organization.">
+                <label for="organization" class="tooltip-label" title="This is the organization that employs you for this survey. For example if you are employed by a ship put in that ship, if you are employed by a branch put in the branch, ect ect. This is used to organize your log by your employment group for future exports to Certification">
                     Organization ℹ️
                 </label>
-                <input type="text" id="organization" list="orgOptions" placeholder="Select or type..." title="Pick the organization that employs you for each mission. For example, if you are a person employed by a Ship put the ship. If you are augmenting on the ship and doing another job put that other job as the organization.">
+                <input type="text" id="organization" list="orgOptions" placeholder="Select or type..." title="This is the organization that employs you for this survey. For example if you are employed by a ship put in that ship, if you are employed by a branch put in the branch, ect ect. This is used to organize your log by your employment group for future exports to Certification">
             </div>
             <div class="form-group">
                 <label>Date Range</label>
@@ -351,7 +141,6 @@
                     <label><input type="radio" name="weekendMode" value="no" checked> Didn't work weekends</label><br>
                     <label><input type="radio" name="weekendMode" value="yes"> Worked weekends</label>
                 </div>
-
             </div>
         </div>
 
@@ -360,27 +149,23 @@
             <input type="text" id="activityPerformed" placeholder="Brief description of duties performed...">
         </div>
 
-        <div class="grid-4">
+        <div class="grid-3">
             <div class="form-group">
-                <label for="vessel">Vessel / Location</label>
-                <input type="text" id="vessel" list="vesselListDatalist" placeholder="Select or type...">
-                <datalist id="vesselListDatalist"></datalist>
-            </div>
-            <div class="form-group">
-                <label for="vesselType">Vessel Type</label>
-                <input type="text" id="vesselType" list="vesselTypeDatalist" placeholder="Select or type...">
-                <datalist id="vesselTypeDatalist">
-                    <option value="N/A">
-                    <option value="Ship">
-                    <option value="Launch">
-                    <option value="Small Boat">
-                </datalist>
-            </div>
-            
-            <div class="full-width" style="text-align: right; margin-bottom: -15px;">
-                <button type="button" class="btn" style="background-color: #6c757d; font-size: 13px; padding: 6px 12px;" onclick="loadPreviousTools()">🔄 Load Previous Activities, Systems & Software</button>
+                <label for="fieldUnit">Field Unit</label>
+                <input type="text" id="fieldUnit" list="fieldUnitDatalist" placeholder="Select or type...">
+                <datalist id="fieldUnitDatalist"></datalist>
             </div>
 
+            <div class="form-group">
+                <label for="vesselTypeInput">Vessel Type</label>
+                <span class="help-text">Type separated by commas, or check below</span>
+                <input type="text" id="vesselTypeInput" placeholder="e.g. Ship, Launch">
+                <div class="dropdown-checklist">
+                    <span class="anchor" onclick="toggleCheckList('vesselTypeList', event)">☑ Select Known... ⏷</span>
+                    <ul id="vesselTypeList" class="items"></ul>
+                </div>
+            </div>
+            
             <div class="form-group">
                 <label for="equipmentInput">System(s) Used</label>
                 <span class="help-text">Type separated by commas, or check below</span>
@@ -390,7 +175,9 @@
                     <ul id="equipmentList" class="items"></ul>
                 </div>
             </div>
+        </div>
 
+        <div class="grid-2">
             <div class="form-group">
                 <label for="softwareInput">Software Used</label>
                 <span class="help-text">Type separated by commas, or check below</span>
@@ -398,6 +185,16 @@
                 <div class="dropdown-checklist">
                     <span class="anchor" onclick="toggleCheckList('softwareList', event)">☑ Select Known Software... ⏷</span>
                     <ul id="softwareList" class="items"></ul>
+                </div>
+            </div>
+            
+            <div class="form-group" style="display: flex; flex-direction: column; justify-content: center;">
+                <label for="prevLogSelect">Load Previous Tools & Systems</label>
+                <div style="display: flex; gap: 10px;">
+                    <select id="prevLogSelect" style="flex-grow: 1; padding: 6px;">
+                        <option value="">No logs available...</option>
+                    </select>
+                    <button type="button" class="btn" style="background-color: #6c757d; margin:0;" onclick="loadPreviousTools()">🔄 Load</button>
                 </div>
             </div>
         </div>
@@ -415,10 +212,11 @@
                 <tr>
                     <th>Organization</th>
                     <th>Project</th>
+                    <th>Geo Loc</th>
                     <th>Date(s)</th>
                     <th>Category</th>
                     <th>Hours</th>
-                    <th>Vessel</th>
+                    <th>Field Unit (Vessel Type)</th>
                     <th>Systems</th>
                     <th>Software</th>
                     <th>Activity</th>
@@ -430,629 +228,9 @@
         </table>
         <h3 style="text-align: right; margin-top: 15px;">Total Logged Hours: <span id="totalHours">0</span></h3>
     </div>
-
-    <button class="export-btn" onclick="exportProjectJSON()">Export as Logbook JSON</button>
-    <button class="cert-btn" onclick="convertToCertificationJSON()">Convert to Certification JSON</button>
 </div>
 
-<script>
-    const activityList = ["Acquisition", "Processing", "Planning", "Integration"];
-    const vesselList = ["Land-based", "Bell M. Shimada", "Fairweather", "Ferdinand R. Hassler", "Gordon Gunter", "Henry B. Bigelow", "Nancy Foster", "NRT Fernandina", "NRT Gulfport", "NRT New London", "NRT Patuxent", "NRT Seattle", "Okeanos Explorer", "Oregon II", "Oscar Dyson", "Oscar Elton Sette", "Pisces", "Rainier", "Reuben Lasker", "Ronald H. Brown", "Thomas Jefferson"];
-    const equipmentList = ["N/A", "EM122", "EM124", "EM302", "EM304", "EM710", "EM712", "EM2040", "EM2040C", "EK60", "EK80", "ME70", "Klein 500", "Klein 5000", "SBP29"];
-    const softwareList = ["N/A", "CARIS", "Charlene", "Fledermaus", "FMGT", "HYPACK", "POSPac", "Pydro (all others)", "QC Tools", "Qimera", "SIS5", "Sound Speed Manager"];
-
-    let projectLogs = [];
-    let currentEditId = null; // Track if we are editing an entry
-
-    window.onload = function() {
-        populateDatalist('vesselListDatalist', vesselList);
-        
-        populateCheckboxList('activityCategoryList', 'activityCategoryInput', activityList);
-        populateCheckboxList('equipmentList', 'equipmentInput', equipmentList);
-        populateCheckboxList('softwareList', 'softwareInput', softwareList);
-        
-        const today = new Date();
-        document.getElementById('startDate').valueAsDate = today;
-        document.getElementById('endDate').valueAsDate = today;
-
-        document.addEventListener('click', function(event) {
-            if (!event.target.closest('.dropdown-checklist')) {
-                document.querySelectorAll('.dropdown-checklist ul.items').forEach(ul => {
-                    ul.style.display = 'none';
-                });
-            }
-        });
-    };
-
-    function populateDatalist(elementId, dataArray) {
-        const datalist = document.getElementById(elementId);
-        datalist.innerHTML = '';
-        dataArray.forEach(item => {
-            let option = document.createElement('option');
-            option.value = item;
-            datalist.appendChild(option);
-        });
-    }
-
-    function toggleCheckList(listId, event) {
-        event.stopPropagation();
-        const ul = document.getElementById(listId);
-        document.querySelectorAll('.dropdown-checklist ul.items').forEach(list => {
-            if (list.id !== listId) list.style.display = 'none';
-        });
-        
-        ul.style.display = (ul.style.display === 'block') ? 'none' : 'block';
-    }
-
-    function populateCheckboxList(listId, inputId, dataArray) {
-        const ul = document.getElementById(listId);
-        ul.innerHTML = '';
-        dataArray.forEach(item => {
-            let li = document.createElement('li');
-            let label = document.createElement('label');
-            let cb = document.createElement('input');
-            cb.type = 'checkbox';
-            cb.value = item;
-            
-            cb.onchange = (e) => handleCheckboxChange(inputId, item, e.target.checked);
-            
-            label.appendChild(cb);
-            label.appendChild(document.createTextNode(' ' + item));
-            li.appendChild(label);
-            ul.appendChild(li);
-        });
-
-        document.getElementById(inputId).addEventListener('input', () => syncCheckboxes(inputId, listId));
-    }
-
-    function handleCheckboxChange(inputId, value, isChecked) {
-        const input = document.getElementById(inputId);
-        let vals = input.value.split(',').map(s => s.trim()).filter(Boolean);
-        
-        if (isChecked) {
-            if (!vals.includes(value)) vals.push(value);
-        } else {
-            vals = vals.filter(v => v !== value);
-        }
-        
-        input.value = vals.join(', ');
-    }
-
-    function syncCheckboxes(inputId, listId) {
-        const input = document.getElementById(inputId);
-        const vals = input.value.split(',').map(s => s.trim()).filter(Boolean);
-        const ul = document.getElementById(listId);
-        const checkboxes = ul.querySelectorAll('input[type="checkbox"]');
-        
-        checkboxes.forEach(cb => {
-            cb.checked = vals.includes(cb.value);
-        });
-    }
-
-    function toggleWeekendOpts() {
-        const hourMode = document.querySelector('input[name="hourMode"]:checked').value;
-        const weekendOpts = document.getElementById('weekendOpts');
-        if (hourMode === 'average') {
-            weekendOpts.style.display = 'block';
-        } else {
-            weekendOpts.style.display = 'none';
-        }
-    }
-
-    function calculateTotalHours(startStr, endStr, baseHours, hourMode, weekendMode) {
-        if (hourMode === 'total') return baseHours;
-        if (!startStr) return baseHours; 
-        
-        let end = endStr ? endStr : startStr;
-        
-        let startD = new Date(startStr + 'T00:00:00'); 
-        let endD = new Date(end + 'T00:00:00');
-        
-        if (endD < startD) {
-            alert("Warning: End date is before Start Date. Hours may calculate incorrectly.");
-            return baseHours;
-        }
-
-        let daysCount = 0;
-        let currentD = new Date(startD);
-        
-        while (currentD <= endD) {
-            let dayOfWeek = currentD.getDay(); 
-            if (weekendMode === 'yes' || (dayOfWeek !== 0 && dayOfWeek !== 6)) {
-                daysCount++;
-            }
-            currentD.setDate(currentD.getDate() + 1);
-        }
-        
-        return daysCount * baseHours;
-    }
-
-    function loadPreviousTools() {
-        if (projectLogs.length === 0) {
-            alert("No previous entries exist to load data from.");
-            return;
-        }
-        const lastLog = projectLogs[projectLogs.length - 1];
-        
-        const actInput = document.getElementById('activityCategoryInput');
-        actInput.value = (lastLog.category || []).join(', ');
-        syncCheckboxes('activityCategoryInput', 'activityCategoryList');
-
-        const sysInput = document.getElementById('equipmentInput');
-        sysInput.value = (lastLog.systemsUsed || []).join(', ');
-        syncCheckboxes('equipmentInput', 'equipmentList');
-        
-        const softInput = document.getElementById('softwareInput');
-        softInput.value = (lastLog.softwareUsed || []).join(', ');
-        syncCheckboxes('softwareInput', 'softwareList');
-    }
-
-    function resetCustomInputs() {
-        document.getElementById('activityCategoryInput').value = '';
-        document.getElementById('equipmentInput').value = '';
-        document.getElementById('softwareInput').value = '';
-        
-        document.querySelectorAll('.dropdown-checklist input[type="checkbox"]').forEach(cb => cb.checked = false);
-    }
-
-    // --- EDIT LOGIC ---
-    function editEntry(id) {
-        const log = projectLogs.find(l => l.id === id);
-        if(!log) return;
-
-        // Populate standard fields
-        document.getElementById('projectName').value = log.projectName || '';
-        document.getElementById('jobTitle').value = log.jobTitle || '';
-        document.getElementById('projectDescription').value = log.projectDescription || '';
-        document.getElementById('organization').value = log.organization || '';
-        document.getElementById('startDate').value = log.startDate || '';
-        document.getElementById('endDate').value = log.endDate || '';
-        document.getElementById('activityHours').value = log.hoursInputBase || log.hours || '';
-        document.getElementById('activityPerformed').value = log.activity || '';
-        document.getElementById('vessel').value = log.vesselLocation || '';
-        document.getElementById('vesselType').value = log.vesselType || '';
-
-        // Radios
-        const hourRadios = document.querySelectorAll('input[name="hourMode"]');
-        hourRadios.forEach(r => r.checked = (r.value === (log.hourMode || 'total')));
-        
-        const weekendRadios = document.querySelectorAll('input[name="weekendMode"]');
-        weekendRadios.forEach(r => r.checked = (r.value === (log.weekendMode || 'no')));
-        
-        toggleWeekendOpts(); 
-
-        // Multi-selects
-        document.getElementById('activityCategoryInput').value = (log.category || []).join(', ');
-        syncCheckboxes('activityCategoryInput', 'activityCategoryList');
-
-        document.getElementById('equipmentInput').value = (log.systemsUsed || []).join(', ');
-        syncCheckboxes('equipmentInput', 'equipmentList');
-
-        document.getElementById('softwareInput').value = (log.softwareUsed || []).join(', ');
-        syncCheckboxes('softwareInput', 'softwareList');
-
-        // Set Edit Mode
-        currentEditId = id;
-        const btn = document.getElementById('submitBtn');
-        btn.textContent = '💾 Update Entry';
-        btn.style.backgroundColor = '#f39c12';
-        document.getElementById('cancelEditBtn').style.display = 'block';
-        
-        // Scroll smoothly up to the form
-        document.getElementById('logEntrySection').scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function cancelEdit() {
-        currentEditId = null;
-        
-        // Restore buttons
-        const btn = document.getElementById('submitBtn');
-        btn.textContent = '+ Add Entry to Project';
-        btn.style.backgroundColor = 'var(--primary)';
-        document.getElementById('cancelEditBtn').style.display = 'none';
-        
-        // Clear activity specific fields (keep context fields like Project Name to save typing)
-        document.getElementById('activityHours').value = '';
-        document.getElementById('activityPerformed').value = '';
-        resetCustomInputs();
-    }
-
-    function addLogEntry() {
-        const projectName = document.getElementById('projectName').value;
-        const jobTitle = document.getElementById('jobTitle').value;
-        const projectDescription = document.getElementById('projectDescription').value;
-        const organization = document.getElementById('organization').value;
-        
-        const startDate = document.getElementById('startDate').value;
-        const endDate = document.getElementById('endDate').value;
-        
-        const activityHoursInput = parseFloat(document.getElementById('activityHours').value) || 0;
-        const hourMode = document.querySelector('input[name="hourMode"]:checked').value;
-        const weekendMode = document.querySelector('input[name="weekendMode"]:checked').value;
-        
-        const activityPerformed = document.getElementById('activityPerformed').value;
-        const vessel = document.getElementById('vessel').value;
-        const vesselType = document.getElementById('vesselType').value;
-        
-        const activityCategory = document.getElementById('activityCategoryInput').value.split(',').map(s=>s.trim()).filter(Boolean);
-        const equipment = document.getElementById('equipmentInput').value.split(',').map(s=>s.trim()).filter(Boolean);
-        const software = document.getElementById('softwareInput').value.split(',').map(s=>s.trim()).filter(Boolean);
-
-        if (!organization) {
-            alert("Please enter an Organization.");
-            return;
-        }
-
-        if(activityHoursInput <= 0) {
-            alert("Please enter valid activity hours.");
-            return;
-        }
-
-        const calculatedTotalHours = calculateTotalHours(startDate, endDate, activityHoursInput, hourMode, weekendMode);
-
-        let dateDisplay = startDate;
-        if (startDate && endDate && startDate !== endDate) {
-            dateDisplay = `${startDate} to ${endDate}`;
-        } else if (!startDate && endDate) {
-            dateDisplay = endDate; 
-        } else if (!startDate && !endDate) {
-            dateDisplay = "No Date Provided";
-        }
-
-        const entry = {
-            id: currentEditId ? currentEditId : Date.now().toString(),
-            projectName: projectName,
-            jobTitle: jobTitle,
-            projectDescription: projectDescription,
-            organization: organization,
-            date: dateDisplay, 
-            startDate: startDate, 
-            endDate: endDate,
-            category: activityCategory,
-            hours: calculatedTotalHours, 
-            hoursInputBase: activityHoursInput, 
-            hourMode: hourMode,
-            weekendMode: weekendMode,
-            activity: activityPerformed,
-            vesselLocation: vessel,
-            vesselType: vesselType,
-            systemsUsed: equipment,
-            softwareUsed: software
-        };
-
-        if (currentEditId) {
-            const index = projectLogs.findIndex(l => l.id === currentEditId);
-            if (index !== -1) {
-                projectLogs[index] = entry; // Overwrite existing
-            }
-            cancelEdit(); // Reset form states and ID
-        } else {
-            projectLogs.push(entry);
-            document.getElementById('activityHours').value = '';
-            document.getElementById('activityPerformed').value = '';
-            resetCustomInputs();
-        }
-
-        updateTable();
-    }
-
-    function removeEntry(id) {
-        projectLogs = projectLogs.filter(log => log.id !== id);
-        updateTable();
-    }
-
-    function updateTable() {
-        const tbody = document.querySelector('#logTable tbody');
-        tbody.innerHTML = '';
-        let totalHours = 0;
-
-        projectLogs.forEach(log => {
-            totalHours += log.hours;
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td><strong>${log.organization || 'N/A'}</strong></td>
-                <td>${log.projectName || 'N/A'}</td>
-                <td>${log.date}</td>
-                <td>${(log.category || []).join(', ')}</td>
-                <td>${log.hours}</td>
-                <td>${log.vesselLocation} (${log.vesselType})</td>
-                <td>${(log.systemsUsed || []).join(', ')}</td>
-                <td>${(log.softwareUsed || []).join(', ')}</td>
-                <td>${log.activity}</td>
-                <td style="white-space: nowrap;">
-                    <button style="background:#f39c12; padding: 5px 10px; margin:0 5px 0 0;" onclick="editEntry('${log.id}')" title="Edit Entry">✎</button>
-                    <button style="background:red; padding: 5px 10px; margin:0;" onclick="removeEntry('${log.id}')" title="Delete Entry">X</button>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
-
-        document.getElementById('totalHours').textContent = totalHours;
-    }
-
-    // --- Import NOAA XML Metadata Logic ---
-    function loadNOAAXML(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            try {
-                const parser = new DOMParser();
-                const xmlDoc = parser.parseFromString(e.target.result, "text/xml");
-
-                function getLocalNodes(parent, name) {
-                    let results = [];
-                    if (!parent) return results;
-                    let elements = parent.getElementsByTagName('*');
-                    for (let i = 0; i < elements.length; i++) {
-                        let elName = elements[i].localName || elements[i].nodeName;
-                        if (elName.includes(':')) elName = elName.split(':')[1];
-                        if (elName.toLowerCase() === name.toLowerCase()) {
-                            results.push(elements[i]);
-                        }
-                    }
-                    return results;
-                }
-
-                let projects = getLocalNodes(xmlDoc, "project");
-                let surveys = getLocalNodes(xmlDoc, "survey");
-                let dates = getLocalNodes(xmlDoc, "date");
-
-                if (projects.length > 0 || surveys.length > 0 || dates.length > 0) {
-                    let pId = ""; let pLoc = "";
-                    if (projects.length > 0) {
-                        let uidNode = getLocalNodes(projects[0], "uniqueId")[0];
-                        let nameNode = getLocalNodes(projects[0], "name")[0];
-                        if (uidNode) pId = uidNode.textContent.trim();
-                        if (nameNode) pLoc = nameNode.textContent.trim();
-                    }
-
-                    let sId = ""; let sLoc = "";
-                    if (surveys.length > 0) {
-                        let uidNode = getLocalNodes(surveys[0], "uniqueId")[0];
-                        let nameNode = getLocalNodes(surveys[0], "name")[0];
-                        if (uidNode) sId = uidNode.textContent.trim();
-                        if (nameNode) sLoc = nameNode.textContent.trim();
-                    }
-
-                    let pName = (pId && sId) ? `${pId} (${sId})` : (pId || sId);
-                    let pDesc = (pLoc && sLoc) ? `${pLoc} - ${sLoc}` : (pLoc || sLoc);
-                    
-                    if (pName) document.getElementById('projectName').value = pName;
-                    if (pDesc) document.getElementById('projectDescription').value = pDesc;
-
-                    if (dates.length > 0) {
-                        let startNode = getLocalNodes(dates[0], "start")[0];
-                        let endNode = getLocalNodes(dates[0], "end")[0];
-                        if (startNode) document.getElementById('startDate').value = startNode.textContent.trim();
-                        if (endNode) document.getElementById('endDate').value = endNode.textContent.trim();
-                    }
-                    
-                    let vesselNodes = getLocalNodes(xmlDoc, "vessel");
-                    if (vesselNodes.length > 0) {
-                        let vNameNode = getLocalNodes(vesselNodes[0], "name")[0];
-                        if (vNameNode) document.getElementById('vessel').value = vNameNode.textContent.trim();
-                    }
-
-                } else {
-                    let titleNode = getLocalNodes(xmlDoc, "title")[0] || getLocalNodes(xmlDoc, "resTitle")[0];
-                    if (titleNode) document.getElementById('projectName').value = titleNode.textContent.trim();
-
-                    let abstractNode = getLocalNodes(xmlDoc, "abstract")[0];
-                    if (abstractNode) document.getElementById('projectDescription').value = abstractNode.textContent.trim();
-
-                    let begNode = getLocalNodes(xmlDoc, "begdate")[0];
-                    if (begNode) {
-                        let txt = begNode.textContent.trim().replace(/-/g, '');
-                        if(txt.length >= 8) {
-                           document.getElementById('startDate').value = `${txt.substring(0,4)}-${txt.substring(4,6)}-${txt.substring(6,8)}`;
-                        }
-                    }
-
-                    let endNode = getLocalNodes(xmlDoc, "enddate")[0];
-                    if (endNode) {
-                        let txt = endNode.textContent.trim().replace(/-/g, '');
-                        if(txt.length >= 8) {
-                           document.getElementById('endDate').value = `${txt.substring(0,4)}-${txt.substring(4,6)}-${txt.substring(6,8)}`;
-                        }
-                    }
-                }
-
-                alert("NOAA XML metadata parsed successfully and loaded into project fields!");
-
-            } catch (error) {
-                console.error("Error parsing NOAA XML:", error);
-                alert("Failed to parse the XML file. Ensure it is a valid NOAA metadata XML.");
-            }
-            
-            event.target.value = '';
-        };
-        
-        reader.readAsText(file);
-    }
-
-    function loadProjectJSON(event) {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            try {
-                const data = JSON.parse(e.target.result);
-                
-                if (data.logbookEntries) {
-                    document.getElementById('userName').value = data.userName || '';
-                    document.getElementById('userEmail').value = data.userEmail || '';
-                    
-                    projectLogs = data.logbookEntries;
-                    updateTable();
-
-                    if(projectLogs.length > 0) {
-                        const last = projectLogs[projectLogs.length - 1];
-                        document.getElementById('projectName').value = last.projectName || '';
-                        document.getElementById('jobTitle').value = last.jobTitle || '';
-                        document.getElementById('projectDescription').value = last.projectDescription || '';
-                        document.getElementById('organization').value = last.organization || '';
-                    }
-
-                    alert("Project JSON loaded successfully!");
-                } else {
-                    alert("The selected JSON does not match the expected Logbook format.");
-                }
-            } catch (error) {
-                console.error("Error parsing JSON:", error);
-                alert("Failed to parse the JSON file. Ensure it is not corrupted.");
-            }
-            
-            event.target.value = '';
-        };
-        
-        reader.readAsText(file);
-    }
-
-    // --- Export Logic (Standard Logbook) ---
-    function exportProjectJSON() {
-        const userName = document.getElementById('userName').value || "No_Name_Provided";
-        const userEmail = document.getElementById('userEmail').value || "No_Email_Provided";
-        
-        if (projectLogs.length === 0) {
-            alert("Add at least one log entry before exporting!");
-            return;
-        }
-
-        const projectData = {
-            id: "proj_" + Date.now().toString(),
-            userName: userName,
-            userEmail: userEmail,
-            totalProjectHours: projectLogs.reduce((sum, log) => sum + log.hours, 0),
-            logbookEntries: projectLogs, 
-            exportDate: new Date().toISOString()
-        };
-
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(projectData, null, 4));
-        const downloadAnchorNode = document.createElement('a');
-        downloadAnchorNode.setAttribute("href", dataStr);
-        downloadAnchorNode.setAttribute("download", `${userName.replace(/\s+/g, '_')}_NOAAlogbook.json`);
-        document.body.appendChild(downloadAnchorNode);
-        downloadAnchorNode.click();
-        downloadAnchorNode.remove();
-    }
-
-    // --- Export Logic (Certification App Conversion) ---
-    function convertToCertificationJSON() {
-        if (projectLogs.length === 0) {
-            alert("Add at least one log entry to convert to Certification format.");
-            return;
-        }
-
-        const applicant = document.getElementById('userName').value || "No_Name_Provided";
-        const email = document.getElementById('userEmail').value || "";
-
-        const groupedLogs = {};
-        
-        projectLogs.forEach(log => {
-            const org = log.organization || "Unknown Organization";
-            
-            if (!groupedLogs[org]) {
-                groupedLogs[org] = {
-                    jobTitles: new Set(),
-                    j_projs: new Set(),
-                    j_resps: new Set(),
-                    systems: new Set(),
-                    software: new Set(),
-                    dates: []
-                };
-            }
-            
-            if (log.startDate) groupedLogs[org].dates.push(new Date(log.startDate + 'T00:00:00').getTime());
-            if (log.endDate) groupedLogs[org].dates.push(new Date(log.endDate + 'T00:00:00').getTime());
-
-            if (log.jobTitle && log.jobTitle.trim() !== '') groupedLogs[org].jobTitles.add(log.jobTitle.trim());
-
-            const pName = log.projectName || "Unknown Project";
-            const pDesc = log.projectDescription || "No description provided.";
-            const pAct = log.activity || "None";
-            const pStart = log.startDate || "Unknown Start Date";
-            const pEnd = log.endDate || (log.startDate ? log.startDate : "Unknown End Date");
-            const pCategory = (log.category && log.category.length > 0) ? log.category.join(', ') : "None";
-            
-            // Collect deduplicated Projects (j_proj) 
-            groupedLogs[org].j_projs.add(`${pName} - ${pDesc}`);
-
-            // Collect deduplicated Responsibilities (j_resp) using exact requested format
-            const respString = `From ${pStart} to ${pEnd} for ${pName}: daily activities: ${pCategory}, detailed activities: ${pAct}`;
-            groupedLogs[org].j_resps.add(respString);
-
-            (log.systemsUsed || []).forEach(sys => { 
-                if(sys) groupedLogs[org].systems.add(sys.trim()); 
-            });
-            (log.softwareUsed || []).forEach(soft => { 
-                if(soft) groupedLogs[org].software.add(soft.trim()); 
-            });
-        });
-
-        const certDataArray = [];
-        let e_number = 1;
-
-        for (const [org, data] of Object.entries(groupedLogs)) {
-            
-            let d_from = "";
-            let d_to = "";
-            
-            if (data.dates.length > 0) {
-                const minTime = Math.min(...data.dates);
-                const maxTime = Math.max(...data.dates);
-                d_from = new Date(minTime).toISOString().split('T')[0];
-                d_to = new Date(maxTime).toISOString().split('T')[0];
-            }
-
-            let j_proj_text = Array.from(data.j_projs).join('\n');
-            let j_resp_text = Array.from(data.j_resps).join('\n');
-
-            certDataArray.push({
-                "e_number": String(e_number++),
-                "engagement_type": "PE", 
-                "f_name": org,
-                "f_addr": "", 
-                "s_name": "",
-                "s_addr": "",
-                "d_from": d_from,
-                "d_to": d_to,
-                "j_title": Array.from(data.jobTitles).join(' / '), 
-                "j_proj": j_proj_text, 
-                "j_resp": j_resp_text, 
-                "d_gaps": "", 
-                "f_email": "",
-                "f_tel": "",
-                "s_email": "",
-                "s_tel": "",
-                "j_equip": Array.from(data.systems).join(", "),
-                "j_soft": Array.from(data.software).join(", "),
-                "Edu_number": "0",
-                "not_hydro_eng": "0",
-                "Hydro_time": "", 
-                "H_in_field": "", 
-                "H_charge": "0"
-            });
-        }
-
-        const certJSON = {
-            "applicant": applicant,
-            "email": email,
-            "level": "Level II", 
-            "data": certDataArray
-        };
-
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(certJSON, null, 4));
-        const downloadAnchorNode = document.createElement('a');
-        downloadAnchorNode.setAttribute("href", dataStr);
-        downloadAnchorNode.setAttribute("download", `${applicant.replace(/\s+/g, '_')}_Certification.json`);
-        document.body.appendChild(downloadAnchorNode);
-        downloadAnchorNode.click();
-        downloadAnchorNode.remove();
-    }
-</script>
+<script src="noaalog.js"></script>
 
 </body>
 </html>

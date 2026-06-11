@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hspi:hydrographicSurveyPI xmlns:hspi="http://svn.pydro.noaa.gov/2025/02/HydrographicSurveyPI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://svn.pydro.noaa.gov/2025/02/HydrographicSurveyPI http://svn.pydro.noaa.gov/2025/02/HSPI.xsd">
+    <hspi:generalInformation>
+        <hspi:version final="true" />
+        <hspi:project>
+            <hspi:uniqueId>OPR-W386-TJ-26</hspi:uniqueId>
+            <hspi:name>Lake Erie</hspi:name>
+            <hspi:fieldUnit>NOAA Ship Thomas Jefferson (S222)</hspi:fieldUnit>
+            <hspi:state>New York</hspi:state>
+            <hspi:state>Ohio</hspi:state>
+            <hspi:state>Pennsylvania</hspi:state>
+        </hspi:project>
+        <hspi:dates>
+            <hspi:plannedAcquisitionTime>
+                <hspi:startDate>2026-04-01</hspi:startDate>
+                <hspi:endDate>2026-09-30</hspi:endDate>
+            </hspi:plannedAcquisitionTime>
+            <hspi:deliveryDate>120 days from completion of data acquisition.</hspi:deliveryDate>
+        </hspi:dates>
+        <hspi:purpose>The project area is spread throughout Lake Erie, with most of the surveys located in central Lake Erie, and with additional surveys in the approaches to Buffalo and in Lake Ontario. Lake Erie borders multiple large US and Canadian cities and supports several major ports and local communities. Most of the project area has not been surveyed since the 1940s. Lake Erie is highly trafficked by commercial and recreational vessels. There are several ferry routes that connect small islands with the mainland within the western project extents. The western portion of the lake is one of the most shallow in all of the Great Lakes, making danger to navigation identification critical. This project will contribute to the collaborative Lakebed 2030 initiative to map the Great Lakes. A significant portion of the survey is located within the proposed Lake Erie National Marine Sanctuary. Surveying this area will help inform the designation of this sanctuary. Additional surveys will be conducted within the Lake Ontario National Marine Sanctuary. Mapping will help identify critical habitats located within the sanctuaries.</hspi:purpose>
+        <hspi:supportDocuments>
+            <hspi:hssd>NOS Hydrographic Survey Specifications and Deliverables (HSSD), Version 2026-0-00 or later</hspi:hssd>
+            <hspi:fpm>NOS Field Procedures Manual (FPM), February 2021</hspi:fpm>
+            <hspi:xmlVersion>NOAA XML Survey Metadata, Version 2025_02 or later</hspi:xmlVersion>
+        </hspi:supportDocuments>
+        <hspi:safetyStatement>PERSONNEL SAFETY AND DATA QUALITY SHALL ALWAYS BE EMPHASIZED OVER DATA QUANTITY! THE HYDROGRAPHER SHALL NEVER SUBJECT PERSONNEL OR BOATS TO UNDUE RISKS AND HAZARDS.</hspi:safetyStatement>
+        <hspi:enviroCompliance>
+            <hspi:instructions>Comply with all Environmental Compliance Requirements. Review and adhere to the provided Record of Environmental Consideration (REC) and the Best Management Practices. Note that these project instructions may not include the signed Record of Environmental Consideration (REC) or applicable permits from the program office. HSD has created an Environmental Compliance Webmap, which provides generalized outlines of regions with compliance requirements. This webmap is not definitive, is not authoritative, and shall only be used for general reference.</hspi:instructions>
+        </hspi:enviroCompliance>
+    </hspi:generalInformation>
+    <hspi:limitsAndCoverage>
+        <hspi:instructions>Survey extents are depicted in the GIS files included in the project instruction package. 
+The following sheet listing is in order of priority.</hspi:instructions>
+        <hspi:surveys>
+            <hspi:survey>
+                <hspi:uniqueId>H14035</hspi:uniqueId>
+                <hspi:name>Entrance to Erie Harbor</hspi:name>
+                <hspi:squareNauticalMile>47.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>2215.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14036</hspi:uniqueId>
+                <hspi:name>Approaches to Lake City</hspi:name>
+                <hspi:squareNauticalMile>65.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>3797.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14037</hspi:uniqueId>
+                <hspi:name>5NM North of Presque Isle</hspi:name>
+                <hspi:squareNauticalMile>55.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>1555.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14038</hspi:uniqueId>
+                <hspi:name>10NM North of Presque Isle</hspi:name>
+                <hspi:squareNauticalMile>43.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>1078.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14039</hspi:uniqueId>
+                <hspi:name>12NM Northwest of Presque Isle</hspi:name>
+                <hspi:squareNauticalMile>53.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>2175.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14040</hspi:uniqueId>
+                <hspi:name>8NM Northwest of Presque Isle</hspi:name>
+                <hspi:squareNauticalMile>52.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>2022.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14332</hspi:uniqueId>
+                <hspi:name>Approaches to Fairport Harbor</hspi:name>
+                <hspi:squareNauticalMile>6.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>489.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14041</hspi:uniqueId>
+                <hspi:name>Entrance to Lorain Harbor</hspi:name>
+                <hspi:squareNauticalMile>30.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>2043.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14333</hspi:uniqueId>
+                <hspi:name>Approaches to Vermillion</hspi:name>
+                <hspi:squareNauticalMile>45.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>2788.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14334</hspi:uniqueId>
+                <hspi:name>Approaches to Huron</hspi:name>
+                <hspi:squareNauticalMile>63.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>4315.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14335</hspi:uniqueId>
+                <hspi:name>3NM Southeast of Kelleys Island</hspi:name>
+                <hspi:squareNauticalMile>87.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>3877.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14336</hspi:uniqueId>
+                <hspi:name>3NM Northeast of Kelleys Island</hspi:name>
+                <hspi:squareNauticalMile>64.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>5304.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14120</hspi:uniqueId>
+                <hspi:name>Approaches to Sodus Bay</hspi:name>
+                <hspi:squareNauticalMile>38.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>1770.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14121</hspi:uniqueId>
+                <hspi:name>Approaches to Fair Haven</hspi:name>
+                <hspi:squareNauticalMile>42.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>2085.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14337</hspi:uniqueId>
+                <hspi:name>9NM Northwest of Oswego</hspi:name>
+                <hspi:squareNauticalMile>48.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>549.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14123</hspi:uniqueId>
+                <hspi:name>4NM North of Sodus Bay</hspi:name>
+                <hspi:squareNauticalMile>62.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>633.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14124</hspi:uniqueId>
+                <hspi:name>2NM North of Pultneyville</hspi:name>
+                <hspi:squareNauticalMile>70.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>609.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14125</hspi:uniqueId>
+                <hspi:name>9NM North of Sodus Bay</hspi:name>
+                <hspi:squareNauticalMile>64.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>248.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14126</hspi:uniqueId>
+                <hspi:name>8NM North of Pultneyville</hspi:name>
+                <hspi:squareNauticalMile>86.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>331.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14127</hspi:uniqueId>
+                <hspi:name>16NM North of Sodus Bay</hspi:name>
+                <hspi:squareNauticalMile>57.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>256.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14128</hspi:uniqueId>
+                <hspi:name>15NM North of Pultneyville</hspi:name>
+                <hspi:squareNauticalMile>74.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>386.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14130</hspi:uniqueId>
+                <hspi:name>Approaches to Oswego</hspi:name>
+                <hspi:squareNauticalMile>44.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>2109.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14131</hspi:uniqueId>
+                <hspi:name>Clark Point</hspi:name>
+                <hspi:squareNauticalMile>65.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>2941.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14132</hspi:uniqueId>
+                <hspi:name>Galloo Island</hspi:name>
+                <hspi:squareNauticalMile>37.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>1471.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14133</hspi:uniqueId>
+                <hspi:name>3NM Southwest of Clark Point</hspi:name>
+                <hspi:squareNauticalMile>86.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>1504.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14134</hspi:uniqueId>
+                <hspi:name>Yorkshire Island</hspi:name>
+                <hspi:squareNauticalMile>56.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>980.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14135</hspi:uniqueId>
+                <hspi:name>3NM South of Main Duck Island</hspi:name>
+                <hspi:squareNauticalMile>68.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>659.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14049</hspi:uniqueId>
+                <hspi:name>Approaches to Buffalo</hspi:name>
+                <hspi:squareNauticalMile>11.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>917.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14050</hspi:uniqueId>
+                <hspi:name>Pelee Island</hspi:name>
+                <hspi:squareNauticalMile>23.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>2345.0</hspi:linearNauticalMile>
+            </hspi:survey>
+            <hspi:survey>
+                <hspi:uniqueId>H14051</hspi:uniqueId>
+                <hspi:name>East Sister Island</hspi:name>
+                <hspi:squareNauticalMile>35.0</hspi:squareNauticalMile>
+                <hspi:linearNauticalMile>3128.0</hspi:linearNauticalMile>
+            </hspi:survey>
+        </hspi:surveys>
+        <hspi:coverageScheme>
+            <hspi:coverage>
+                <hspi:area>All Sheets</hspi:area>
+                <hspi:seafloorCoverage>True</hspi:seafloorCoverage>
+                <hspi:bathyCoverage>False</hspi:bathyCoverage>
+                <hspi:feature>
+                    <hspi:featuresDetected>True</hspi:featuresDetected>
+                    <hspi:detectionSize>General 1</hspi:detectionSize>
+                </hspi:feature>
+                <hspi:uncertainty>
+                    <hspi:maxTHU>General 1</hspi:maxTHU>
+                    <hspi:maxDepthTVU>General 1</hspi:maxDepthTVU>
+                    <hspi:maxHeightTVU>General 1</hspi:maxHeightTVU>
+                </hspi:uncertainty>
+                <hspi:inshoreDepthLimit>NALL</hspi:inshoreDepthLimit>
+            </hspi:coverage>
+            <hspi:note>For all sheets Bathymetric Coverage = False if operations conducted with 100% SSS w/Concurrent MBES, otherwise Bathymetric Coverage = True.</hspi:note>
+        </hspi:coverageScheme>
+    </hspi:limitsAndCoverage>
+    <hspi:assignedTasks>
+        <hspi:coordinateReferenceSystem>
+            <hspi:instructions>CRS and metadata are located in the project instruction package.</hspi:instructions>
+            <hspi:separation>
+                <hspi:MLLW>
+                    <hspi:fileName>OPR-W386-TJ-26_underkeel_hydroid-ITRF2020</hspi:fileName>
+                    <hspi:uncertainty>8.0</hspi:uncertainty>
+                </hspi:MLLW>
+                <hspi:MHW>
+                    <hspi:fileName>OPR-W386-TJ-26_overhead_hydroid-ITRF2020</hspi:fileName>
+                    <hspi:uncertainty>8.0</hspi:uncertainty>
+                </hspi:MHW>
+            </hspi:separation>
+        </hspi:coordinateReferenceSystem>
+        <hspi:shorelineAndFeature>
+            <hspi:instructions>Feature investigation assignments and related information are provided in the GIS files extended attribute schema in the project instruction package.
+
+The potentially assigned features in the following object classes only require visual verification, unless otherwise specified in the aforementioned extended attributes:
+LNDARE, LNDMRK, MORFAC (CATMOR = 1, dolphin), PILPNT, and SBDARE (NATSUR = rock, ledge).  If one of the above features is not seen, contact PM before conducting a feature disproval.</hspi:instructions>
+        </hspi:shorelineAndFeature>
+        <hspi:physicalSeabedSamples assigned="true">
+            <hspi:instructions>Identify 5-7 bottom sample locations per survey sheet in geological areas of interest as observed in the acquired backscatter imagery and/or in areas of potential vessel anchoring. Bottom sample locations shall be spaced at least 2400 meters apart. Do NOT plan to acquire bottom samples where the water depth is greater than 80 meters or within dredged channels (DRGARE), pipeline and cable areas (PIPSOL, CBLARE), or fairways and approaches to a channel (FAIRWY).</hspi:instructions>
+        </hspi:physicalSeabedSamples>
+        <hspi:reporting assigned="true">
+            <hspi:instructions>Adhere to all progress reporting, survey reports, and survey findings requirements.  NOAA field units must use Scribble for reporting survey progress.</hspi:instructions>
+        </hspi:reporting>
+        <hspi:HPPOC>
+            <hspi:instructions>Field units shall not release any information regarding the location of any specific potentially historic and/ or culturally significant anthropogenic features encountered during data collection (e.g., coordinates, depth, etc.) to the public, nor shall the information be included in the Report of Survey. The one exception to this requirement is when the feature poses an immediate danger to navigation. If a feature poses an immediate danger to navigation, the field shall send the information required for charting to the Marine Chart Division for immediate application to the chart per NOS Hydrographic Specifications and deliverables.</hspi:instructions>
+        </hspi:HPPOC>
+        <hspi:affectedENC assigned="true">
+            <hspi:instructions>The ENC suite is actively undergoing rescheming and subject to change. Ensure the latest editions of the largest scale ENCs are used for all data investigations and comparisons.</hspi:instructions>
+        </hspi:affectedENC>
+        <hspi:geographicCells assigned="false">
+            <hspi:instructions>There are no additional Geographic Cells for this survey</hspi:instructions>
+        </hspi:geographicCells>
+        <hspi:junctions assigned="true">
+            <hspi:instructions>Junctions are depicted in the GIS files included in the project package.</hspi:instructions>
+        </hspi:junctions>
+        <hspi:waterLevels assigned="false">
+            <hspi:instructions>There are no Water Level requirements for this project.</hspi:instructions>
+        </hspi:waterLevels>
+        <hspi:dataHandling>
+            <hspi:instructions>Data shall be submitted via USB 3.0-3.2 compatible hard drive.
+Contents must be organized per HSSD Delivery Structure Section 16 and be accompanied by NOAA Form 61-29 Letter Transmitting Data in digital and hard copy format. Email the tracking information and electronic copy of the LTD to the respective processing branch, with a CC to the PM/COR.</hspi:instructions>
+            <hspi:processingBranch>Send to:
+Chief, Atlantic Hydrographic Branch
+Data Manager, Atlantic Hydrographic Branch
+NOAA
+Routing N/CS33
+439 West York Street
+Norfolk, VA 23510-1114
+
+Email to:
+AHB.Chief@noaa.gov
+AHB.Stewardship@noaa.gov </hspi:processingBranch>
+        </hspi:dataHandling>
+        <hspi:blogPost assigned="true">
+            <hspi:instructions>Submit Coast Survey blog content per the attached guidance, at least once per project.</hspi:instructions>
+        </hspi:blogPost>
+        <hspi:UAS assigned="false">
+            <hspi:instructions>N/A</hspi:instructions>
+        </hspi:UAS>
+        <hspi:setLineSpacing assigned="false">
+            <hspi:instructions> There are no Set Line Spacing Analysis requirements for this project.</hspi:instructions>
+        </hspi:setLineSpacing>
+        <hspi:transitSurvey assigned="true">
+            <hspi:instructions>If the field unit has the capacity, collect data while transiting to or from the project area. Refer to the Transit Data Best Practices attached guidance. The transit shall be named by Survey_ID = Ship Abbr,. Acquisition Year, Transit (e.g. FH2402T = Ship Abbr,. Acquisition Year, Transit (Chronological / Sequential transit number by project).
+</hspi:instructions>
+        </hspi:transitSurvey>
+    </hspi:assignedTasks>
+    <hspi:userContacts>
+        <hspi:instructions>The following primary offices and persons shall be contacted to discuss survey objectives and accomplishments (Mandatory) or are listed for contact at the discretion of the field unit (Reference).</hspi:instructions>
+        <hspi:projectManager>
+            <hspi:firstName>Clinton</hspi:firstName>
+            <hspi:lastName>Marcus</hspi:lastName>
+            <hspi:agency>NOAA Office of Coast Survey</hspi:agency>
+            <hspi:telephone>541-264-6406</hspi:telephone>
+            <hspi:email>clinton.r.marcus@noaa.gov</hspi:email>
+            <hspi:obligation>Mandatory</hspi:obligation>
+            <hspi:titlePage>true</hspi:titlePage>
+        </hspi:projectManager>
+        <hspi:navigationManager>
+            <hspi:instructions>https://nauticalcharts.noaa.gov/customer-service/regional-managers/</hspi:instructions>
+            <hspi:obligation>For Reference</hspi:obligation>
+        </hspi:navigationManager>
+        <hspi:additionalContact>
+            <hspi:firstName>Honey</hspi:firstName>
+            <hspi:lastName>Stempka</hspi:lastName>
+            <hspi:agency>Lake Erie Designation Project Manager</hspi:agency>
+            <hspi:telephone>301-569-2746</hspi:telephone>
+            <hspi:email>honey.stempka@noaa.gov</hspi:email>
+            <hspi:obligation>For Reference</hspi:obligation>
+            <hspi:titlePage>false</hspi:titlePage>
+        </hspi:additionalContact>
+        <hspi:additionalContact>
+            <hspi:firstName>Jeff</hspi:firstName>
+            <hspi:lastName>Gray</hspi:lastName>
+            <hspi:agency>Lake Ontario NMS Supervisor</hspi:agency>
+            <hspi:telephone>989-312-3365</hspi:telephone>
+            <hspi:email>jeff.gray@noaa.gov</hspi:email>
+            <hspi:obligation>For Reference</hspi:obligation>
+            <hspi:titlePage>false</hspi:titlePage>
+        </hspi:additionalContact>
+        <hspi:additionalContact>
+            <hspi:firstName>Ben</hspi:firstName>
+            <hspi:lastName>Ioset</hspi:lastName>
+            <hspi:agency>Lake Ontario NMS</hspi:agency>
+            <hspi:telephone>301-859-0578</hspi:telephone>
+            <hspi:email>ben.ioset@noaa.gov</hspi:email>
+            <hspi:obligation>For Reference</hspi:obligation>
+            <hspi:titlePage>false</hspi:titlePage>
+        </hspi:additionalContact>
+    </hspi:userContacts>
+</hspi:hydrographicSurveyPI>

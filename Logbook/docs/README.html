@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOAA - Tier - Logbook Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: #f4f7f6;
+        }
+        .content-card {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-top: 5px solid #0055a4;
+        }
+        h1 { color: #0055a4; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        h2 { color: #00a9e0; margin-top: 30px; }
+        h3 { color: #444; }
+        .warning-box {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            color: #856404;
+        }
+        .toc {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 30px;
+        }
+        .toc ul { list-style-type: none; padding-left: 0; }
+        .toc li { margin-bottom: 8px; }
+        .toc a { color: #0055a4; text-decoration: none; font-weight: bold; }
+        .toc a:hover { text-decoration: underline; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 10px; }
+        code {
+            background: #eee;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #d63384;
+        }
+    </style>
+</head>
+<body>
+
+<div class="content-card">
+    <h1>Welcome to the NOAA - Tier - Logbook Documentation</h1>
+    
+    <p>The <strong>NOAA - Tier - Logbook</strong> is a comprehensive tool designed to enhance the tracking of individual time, experience, and system proficiency across different hydrographic and ocean mapping projects.</p>
+
+    <p>This application is fully integrated into the <strong>NOAA - OCS - Center of Excellence (CoE) Tier systems</strong> and serves as a critical stepping stone for the <strong>NSPS - THSOA Certification workflow</strong>. </p>
+
+    <div class="warning-box">
+        <strong>Important Note:</strong> This form is designed to be updated at the <em>end</em> of a leg, project, or cruise. It is not intended to be a day-to-day timesheet.<br><br>
+        Currently (v0.1), this is a client-side application. <strong>Users are entirely responsible for maintaining and backing up their own JSON save files.</strong> In the future, this application will transition into a CoE-hosted web portal with a centralized database. Starting early with this standalone version ensures your data is ready and formatted for a seamless transition!
+    </div>
+
+    <p>If you encounter any bugs or have feature requests, please report them to CoE at: <a href="mailto:taylor.krabiel@noaa.gov"><strong>taylor.krabiel@noaa.gov</strong></a></p>
+
+    <div class="toc">
+        <h3>Contents</h3>
+        <ul>
+            <li><a href="#navigating">Navigating the Logbook</a></li>
+            <li><a href="#imports">Data Imports (Loading Data)</a></li>
+            <li><a href="#fields">Field Breakdown & Best Practices</a></li>
+            <li><a href="#exports">Data Exports</a></li>
+        </ul>
+    </div>
+
+    <h2 id="navigating">Navigating the Logbook</h2>
+    <p>The interface is built into three main sections:</p>
+    <ul>
+        <li><strong>User Information:</strong> Your global identity metadata.</li>
+        <li><strong>Add / Edit Log Entry:</strong> The primary workspace where project and activity data is entered, either manually or via XML imports.</li>
+        <li><strong>Current Project Logs:</strong> A table displaying your active entries, allowing you to edit, delete, and review your total logged hours.</li>
+    </ul>
+    <p>A sticky navigation bar at the top of the screen provides quick access to <strong>LOAD</strong> your previous work or XML metadata, and <strong>EXPORT</strong> your progress into various formats.</p>
+
+    <h2 id="imports">Data Imports (Loading Data)</h2>
+    <p>To save time, the Logbook can parse official NOAA XML files and automatically fill out project metadata (like Project Name, Geographic Location, Field Unit, and Systems Used). Use the <strong>LOAD</strong> dropdown at the top of the screen:</p>
+    <ul>
+        <li><strong>NOAA-OCS-XML: Metadata report (2026):</strong> Parses the newest 2026 metadata structure. Automatically extracts the Field Unit, Project/Survey IDs, Geographic Location, and intelligently maps positioning systems, depth sensors, and sound speed sensors into the "Systems Used" checklist.</li>
+        <li><strong>NOAA-OCS-XML: Project Instructions 2026:</strong> Pulls high-level project directives, automatically filling the Project Description, Location, and Field Unit. <em>(Note: Currently optimized for 2026 PIs).</em></li>
+        <li><strong>NOAA-OCS-XML: Descriptive Report (Prior to 2024):</strong> A legacy parser that digs through pre-2024 DRs to extract project names, field units, locations, and major equipment models.</li>
+        <li><strong>Load Logbook JSON:</strong> Use this to load your previously saved progress! Since no data is stored on a server, you must load your Master JSON file every time you return to the tool.</li>
+    </ul>
+
+    <h2 id="fields">Field Breakdown & Best Practices</h2>
+    <p>When adding a new log entry, the following information is required:</p>
+    <ul>
+        <li><strong>Project Name / Cruise:</strong> The official Unique ID and Name (e.g., <em>OPR-P356-FA-24, H14004</em>).</li>
+        <li><strong>Job Title:</strong> Your specific role during the leg (e.g., <em>Tier 1 Mapping Specialist, Hydrographer In Charge</em>).</li>
+        <li><strong>Geographic Location:</strong> The general area of operations (e.g., <em>Gulf of Maine, Maine</em>).</li>
+        <li><strong>Project Description:</strong> A brief overview of the project's purpose and scope.</li>
+        <li><strong>Organization <span style="color:red;">(CRITICAL)</span>:</strong> This is the organization that <em>employs you</em> for this specific survey. For example, if you are employed by a ship, select that ship. If you are employed by a branch but augmenting on a ship, put the branch. <strong>This field is used to organize your log by your employment group for future exports to the NSPS-THSOA Certification.</strong></li>
+        <li><strong>Date Range & Hours:</strong> Select your Start and End dates. The tool features built-in mathematical validation to ensure you cannot log more hours than physically possible in a given timeframe. You can log hours as a "Total" or as an "Average per Day" (with weekend toggles).</li>
+        <li><strong>Activity Category & Performed:</strong> Select high-level categories (Acquisition, Processing, etc.) and write a brief description of your specific duties.</li>
+        <li><strong>Field Unit & Vessel Type:</strong> The actual platform you were operating on (e.g., <em>NOAA Ship Thomas Jefferson</em>).</li>
+        <li><strong>System(s) & Software Used:</strong> Multi-select dropdowns to track your specific technical proficiencies (e.g., <em>EM122, CARIS, Qimera</em>).</li>
+    </ul>
+
+    <h2 id="exports">Data Exports</h2>
+    <p>Once your log entries are complete, use the <strong>EXPORT</strong> dropdown to save and format your data.</p>
+    <ul>
+        <li><strong>Logbook JSON (Save File):</strong> This is the most important export. It generates the Master JSON file containing all your data. <strong>You must export and save this file to your local computer to preserve your progress.</strong></li>
+        <li><strong>Logbook CSV:</strong> Exports a clean, flat spreadsheet of all your logged entries, matching the columns seen in the "Current Project Logs" UI table. Perfect for quick reviews or personal archiving.</li>
+        <li><strong>Logbook Doc:</strong> Generates a highly formatted, mega Microsoft Word Document (<code>.docx</code>). The document automatically groups your experience by <strong>Organization</strong>, placing each employer on a new page, and generates clean, presentation-ready tables detailing the projects, dates, systems used, and hours logged beneath them.</li>
+    </ul>
+</div>
+
+</body>
+</html>
