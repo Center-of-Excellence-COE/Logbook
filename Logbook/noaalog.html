@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NOAA - Tier - Logbook</title>
     
+    <!-- Libraries for Document and File Generation -->
     <script src="https://unpkg.com/docx@7.1.0/build/index.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     
+    <!-- Link to the extracted stylesheet -->
     <link rel="stylesheet" href="noaalog.css">
 </head>
 <body>
@@ -21,16 +23,23 @@
         </div>
         <div class="header-buttons">
             
+            <!-- LOAD DROPDOWN -->
             <div class="dropdown">
                 <button onclick="toggleTopMenu('loadDropdownMenu')" class="btn btn-load dropbtn">📄 LOAD ▼</button>
                 <div id="loadDropdownMenu" class="dropdown-content">
+                    
+                    <!-- COMBINED METADATA/DR BUTTON WITH TOOLTIP -->
                     <a href="#" onclick="document.getElementById('importXMLFile').click()" title="This import works for DR's prior to 2024 and Metadata reports up to 2026 if there are any issue please submit a bug report">NOAA - OCS - Metadata/DR ℹ️</a>
+                    
+                    <!-- PROJECT INSTRUCTIONS BUTTON WITH TOOLTIP -->
                     <a href="#" onclick="document.getElementById('importXMLFile').click()" title="Currently only supports Project Instructions from 2026. Updates will be needed for older or future PIs.">NOAA-OCS-XML: Project Instructions 2026 ℹ️</a>
+                    
                     <div class="dropdown-divider">Existing Progress</div>
                     <a href="#" onclick="document.getElementById('importFile').click()">Load Logbook JSON</a>
                 </div>
             </div>
 
+            <!-- EXPORT DROPDOWN -->
             <div class="dropdown">
                 <button onclick="toggleTopMenu('exportDropdownMenu')" class="btn btn-export dropbtn">💾 EXPORT ▼</button>
                 <div id="exportDropdownMenu" class="dropdown-content">
@@ -41,6 +50,7 @@
                 </div>
             </div>
 
+            <!-- Hidden File Inputs -->
             <input type="file" id="importXMLFile" accept=".xml" style="display: none;" onchange="loadNOAAXML(event)">
             <input type="file" id="importFile" accept=".json" style="display: none;" onchange="loadProjectJSON(event)">
         </div>
@@ -63,6 +73,7 @@
     <div class="section-box" id="logEntrySection">
         <h2>2. Add / Edit Log Entry</h2>
         
+        <!-- EXPANDED ORGANIZATION OPTIONS -->
         <datalist id="orgOptions">
             <option value="NOAA Ship - Thomas Jefferson">
             <option value="NOAA Ship - Fairweather">
@@ -83,7 +94,7 @@
             <option value="Private Industry / Contractor">
         </datalist>
 
-        <div class="grid-3">
+        <div class="grid-2">
             <div class="form-group">
                 <label for="projectName">Project Name / Cruise</label>
                 <input type="text" id="projectName" placeholder="e.g., OPR-P356-FA-24">
@@ -91,10 +102,6 @@
             <div class="form-group">
                 <label for="jobTitle">Job Title</label>
                 <input type="text" id="jobTitle" placeholder="e.g., Tier 1 Mapping Specialist">
-            </div>
-            <div class="form-group">
-                <label for="geographicLocation">Geographic Location</label>
-                <input type="text" id="geographicLocation" placeholder="e.g., Gulf of Maine, Maine">
             </div>
             <div class="form-group full-width">
                 <label for="projectDescription">Project Description</label>
@@ -106,10 +113,10 @@
 
         <div class="grid-4">
             <div class="form-group">
-                <label for="organization" class="tooltip-label" title="This is the organization that employs you for this survey. For example if you are employed by a ship put in that ship, if you are employed by a branch put in the branch, ect ect. This is used to organize your log by your employment group for future exports to Certification">
+                <label for="organization" class="tooltip-label" title="This is the organization that employs you for this specific survey. For example, if you are employed by a ship or stationed on a ship, select that ship, even if you did this project on another vessel. If you are employed by a branch but augmenting on a ship, put the branch. This field is used to organize your log by your employment group for future exports to the NSPS-THSOA Certification.">
                     Organization ℹ️
                 </label>
-                <input type="text" id="organization" list="orgOptions" placeholder="Select or type..." title="This is the organization that employs you for this survey. For example if you are employed by a ship put in that ship, if you are employed by a branch put in the branch, ect ect. This is used to organize your log by your employment group for future exports to Certification">
+                <input type="text" id="organization" list="orgOptions" placeholder="Select or type..." title="This is the organization that employs you for this specific survey. For example, if you are employed by a ship or stationed on a ship, select that ship, even if you did this project on another vessel. If you are employed by a branch but augmenting on a ship, put the branch. This field is used to organize your log by your employment group for future exports to the NSPS-THSOA Certification.">
             </div>
             <div class="form-group">
                 <label>Date Range</label>
@@ -141,6 +148,7 @@
                     <label><input type="radio" name="weekendMode" value="no" checked> Didn't work weekends</label><br>
                     <label><input type="radio" name="weekendMode" value="yes"> Worked weekends</label>
                 </div>
+
             </div>
         </div>
 
@@ -156,6 +164,7 @@
                 <datalist id="fieldUnitDatalist"></datalist>
             </div>
 
+            <!-- VESSEL TYPE DROPDOWN -->
             <div class="form-group">
                 <label for="vesselTypeInput">Vessel Type</label>
                 <span class="help-text">Type separated by commas, or check below</span>
@@ -167,6 +176,17 @@
             </div>
             
             <div class="form-group">
+                <label for="geographicLocation">Geographic Location</label>
+                <input type="text" id="geographicLocation" placeholder="e.g., Gulf of Maine, Maine">
+            </div>
+        </div>
+            
+        <div class="full-width" style="text-align: right; margin-bottom: 5px;">
+            <button type="button" class="btn" style="background-color: #6c757d; font-size: 13px; padding: 6px 12px;" onclick="loadPreviousTools()">🔄 Load Previous Activities, Systems & Software</button>
+        </div>
+
+        <div class="grid-2">
+            <div class="form-group">
                 <label for="equipmentInput">System(s) Used</label>
                 <span class="help-text">Type separated by commas, or check below</span>
                 <input type="text" id="equipmentInput" placeholder="e.g. EM122, Klein 500">
@@ -175,9 +195,7 @@
                     <ul id="equipmentList" class="items"></ul>
                 </div>
             </div>
-        </div>
 
-        <div class="grid-2">
             <div class="form-group">
                 <label for="softwareInput">Software Used</label>
                 <span class="help-text">Type separated by commas, or check below</span>
@@ -188,6 +206,7 @@
                 </div>
             </div>
             
+            <!-- LOAD PREVIOUS LOG SELECTOR -->
             <div class="form-group" style="display: flex; flex-direction: column; justify-content: center;">
                 <label for="prevLogSelect">Load Previous Tools & Systems</label>
                 <div style="display: flex; gap: 10px;">
@@ -224,7 +243,8 @@
                 </tr>
             </thead>
             <tbody>
-                </tbody>
+                <!-- Populated via JS -->
+            </tbody>
         </table>
         <h3 style="text-align: right; margin-top: 15px;">Total Logged Hours: <span id="totalHours">0</span></h3>
     </div>
