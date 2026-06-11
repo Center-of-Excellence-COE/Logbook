@@ -47,10 +47,10 @@ To save time, the Logbook can parse official NOAA XML files and automatically fi
 When adding a new log entry, the following information is required. 
 
 * **Project Name / Cruise:** The official Unique ID and Name (e.g., *OPR-P356-FA-24, H14004*).
-* **Job Title:** Your specific role during the leg (e.g., *Tier 1 Mapping Specialist, Hydrographer In Charge*).
+* **Job Title:** Your specific role during the leg (e.g., *Survey Tech, Junior Officer, Physical Scientist, Tier 1 Mapping Specialist, Hydrographer In Charge*).
 * **Geographic Location:** The general area of operations (e.g., *Gulf of Maine, Maine*).
 * **Project Description:** A brief overview of the project's purpose and scope.
-* **Organization (CRITICAL):** This is the organization that *employs you* for this specific survey. For example, if you are employed by a ship, select that ship. If you are employed by a branch but augmenting on a ship, put the branch. **This field is used to organize your log by your employment group for future exports to the NSPS-THSOA Certification.**
+* **Organization (CRITICAL):** This is the organization that *employs you* for this specific survey. For example, if you are employed by a ship or stationed on a ship, select that ship, even if you did this project on another vessel. If you are employed by a branch but augmenting on a ship, put the branch. **This field is used to organize your log by your employment group for future exports to the NSPS-THSOA Certification.**
 * **Date Range & Hours:** Select your Start and End dates. The tool features built-in mathematical validation to ensure you cannot log more hours than physically possible in a given timeframe. You can log hours as a "Total" or as an "Average per Day" (with weekend toggles).
 * **Activity Category & Performed:** Select high-level categories (Acquisition, Processing, etc.) and write a brief description of your specific duties.
 * **Field Unit & Vessel Type:** The actual platform you were operating on (e.g., *NOAA Ship Thomas Jefferson*).
