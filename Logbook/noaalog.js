@@ -281,7 +281,7 @@ function addLogEntry() {
         weekendMode: weekendMode,
         activity: activityPerformed,
         fieldUnit: fieldUnit,
-        vesselType: vesselType, // Now an Array
+        vesselType: vesselType,
         systemsUsed: equipment,
         softwareUsed: software
     };
@@ -309,20 +309,17 @@ function updateTable() {
     tbody.innerHTML = '';
     let totalHours = 0;
 
-    // Update the Previous Log Dropdown
     const prevSelect = document.getElementById('prevLogSelect');
     prevSelect.innerHTML = '<option value="">Select a previous log...</option>';
 
     projectLogs.forEach(log => {
         totalHours += log.hours;
         
-        // Populate the dropdown selector
         const opt = document.createElement('option');
         opt.value = log.id;
         opt.textContent = `${log.projectName || 'Unnamed'} - ${log.date}`;
         prevSelect.appendChild(opt);
 
-        // Populate Table
         const vTypeStr = Array.isArray(log.vesselType) ? log.vesselType.join(', ') : (log.vesselType || '');
         const tr = document.createElement('tr');
         tr.innerHTML = `
@@ -375,7 +372,10 @@ function loadNOAAXML(event) {
             const is2026Metadata = getLocalNodes(xmlDoc, "surveyMetadata").length > 0 && getLocalNodes(xmlDoc, "equipmentList").length > 0;
             const isLegacyDR = getLocalNodes(xmlDoc, "descriptiveReport").length > 0;
 
+            let parsedTitle = "";
+
             if (isPI) {
+                // PARSE PROJECT INSTRUCTIONS 2026
                 const pId = getLocalNodes(xmlDoc, "uniqueId")[0]?.textContent.trim();
                 const pName = getLocalNodes(xmlDoc, "name")[0]?.textContent.trim();
                 document.getElementById('projectName').value = [pId, pName].filter(Boolean).join(", ") || "N/A";
@@ -388,9 +388,10 @@ function loadNOAAXML(event) {
                 document.getElementById('fieldUnit').value = getLocalNodes(xmlDoc, "fieldUnit")[0]?.textContent.trim() || "N/A";
                 document.getElementById('equipmentInput').value = "N/A";
 
-                alert("NOAA Project Instructions XML parsed successfully!");
+                parsedTitle = "NOAA Project Instructions XML";
 
             } else if (is2026Metadata) {
+                // PARSE 2026 METADATA
                 const fieldUnitNodes = getLocalNodes(xmlDoc, "fieldUnit");
                 document.getElementById('fieldUnit').value = fieldUnitNodes.length > 0 && fieldUnitNodes[0].textContent.trim() !== "" 
                     ? fieldUnitNodes[0].textContent.trim() : "N/A";
@@ -437,9 +438,10 @@ function loadNOAAXML(event) {
                     if (endNode) document.getElementById('endDate').value = endNode.textContent.trim();
                 }
 
-                alert("NOAA 2026 Metadata XML parsed successfully!");
+                parsedTitle = "NOAA 2026 Metadata XML";
 
             } else if (isLegacyDR) {
+                // PARSE LEGACY DESCRIPTIVE REPORT (Pre-2024)
                 let projParts = [];
                 const projMetaNodes = getLocalNodes(xmlDoc, "projectMetadata");
                 if (projMetaNodes.length > 0) {
@@ -496,10 +498,52 @@ function loadNOAAXML(event) {
                     if (endNode) document.getElementById('endDate').value = endNode.textContent.trim();
                 }
 
-                alert("Legacy NOAA Descriptive Report XML parsed successfully!");
+                parsedTitle = "Legacy NOAA Descriptive Report XML";
+
             } else {
-                alert("Unrecognized NOAA XML format. Could not parse data.");
+                return alert("Unrecognized NOAA XML format. Could not parse data.");
             }
+
+            // ==========================================
+            // SKIM RAW TEXT FOR KNOWN SOFTWARE (Applies to Metadata and DR)
+            // ==========================================
+            let softwareAlertMsg = "";
+            if (is2026Metadata || isLegacyDR) {
+                const fullXmlText = xmlDoc.documentElement.textContent.toUpperCase();
+                let foundSoftware = new Set();
+                
+                // Mappings requested by user
+                const searchMap = {
+                    "CARIS": "CARIS",
+                    "CHARLENE": "Charlene",
+                    "FLEDERMAUS": "Fledermaus",
+                    "FMGT": "FMGT",
+                    "HYPACK": "HYPACK",
+                    "POSPAC": "POSPac",
+                    "PYDRO": "Pydro (all others)",
+                    "QC TOOL": "QC Tools",
+                    "QIMERA": "Qimera",
+                    "SIS4": "SIS5",
+                    "SIS5": "SIS5",
+                    "KONGSBERG": "SIS5",
+                    "SOUND SPEED MANAGER": "Sound Speed Manager"
+                };
+
+                for (const [searchTerm, uiLabel] of Object.entries(searchMap)) {
+                    if (fullXmlText.includes(searchTerm)) {
+                        foundSoftware.add(uiLabel);
+                    }
+                }
+
+                if (foundSoftware.size > 0) {
+                    const softStr = Array.from(foundSoftware).join(", ");
+                    document.getElementById('softwareInput').value = softStr;
+                    syncCheckboxes('softwareInput', 'softwareList');
+                    softwareAlertMsg = `\n\n⚠️ AUTOMATED SOFTWARE CHECK:\nWe skimmed the report and found mentions of: ${softStr}.\n\nPlease note: This is just a heuristic text check and may not be a complete or accurate list of the software YOU specifically used. Verify before saving!`;
+                }
+            }
+
+            alert(`${parsedTitle} parsed successfully!${softwareAlertMsg}`);
 
             // Highlight empty fields so user fills them out!
             highlightMissingXMLFields();
