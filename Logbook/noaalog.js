@@ -1,7 +1,7 @@
 const tierList = ["Tier 1", "Tier 2", "Tier 3"];
 const defaultActivityList = ["Acquisition", "Processing", "Planning", "Integration"];
 const vesselTypesArray = ["Ship", "Launch", "Small Boat (under 65 feet)", "UxS", "Other", "N/A"];
-const fieldUnitList = ["Land-based", "Bell M. Shimada", "Fairweather", "Ferdinand R. Hassler", "Gordon Gunter", "Henry B. Bigelow", "Nancy Foster", "NRT Fernandina", "NRT Gulfport", "NRT New London", "NRT Patuxent", "NRT Seattle", "Okeanos Explorer", "Oregon II", "Oscar Dyson", "Oscar Elton Sette", "Pisces", "Rainier", "Reuben Lasker", "Ronald H. Brown", "Thomas Jefferson", "HSD","NRB","State of Maine"];
+const fieldUnitList = ["Land-based", "Bell M. Shimada", "Fairweather", "Ferdinand R. Hassler", "Gordon Gunter", "Henry B. Bigelow", "Nancy Foster", "NRT Fernandina", "NRT Gulfport", "NRT New London", "NRT Patuxent", "NRT Seattle", "Okeanos Explorer", "Oregon II", "Oscar Dyson", "Oscar Elton Sette", "Pisces", "Rainier", "Reuben Lasker", "Ronald H. Brown", "Thomas Jefferson"];
 const equipmentList = ["N/A", "EM122", "EM124", "EM302", "EM304", "EM710", "EM712", "EM2040", "EM2040C", "EK60", "EK80", "ME70", "Klein 500", "Klein 5000", "SBP29"];
 const softwareList = ["N/A", "CARIS", "Charlene", "Fledermaus", "FMGT", "HYPACK", "POSPac", "Pydro (all others)", "QC Tools", "Qimera", "SIS5", "Sound Speed Manager"];
 
@@ -125,7 +125,7 @@ function syncCheckboxes(inputId, listId, breakdownType) {
     if (breakdownType) renderBreakdownUI(breakdownType, inputId);
 }
 
-// --- OPTIONAL BREAKDOWN UI RENDERER ---
+// --- OPTIONAL BREAKDOWN UI RENDERER (PERCENTAGES) ---
 function renderBreakdownUI(type, inputId) {
     const input = document.getElementById(inputId);
     const values = input.value.split(',').map(s => s.trim()).filter(Boolean);
@@ -139,7 +139,7 @@ function renderBreakdownUI(type, inputId) {
         let label = document.createElement('div');
         label.style.width = '100%';
         label.className = 'help-text';
-        label.innerText = 'Optional Hour Breakdown:';
+        label.innerText = 'Optional Rough % Breakdown (Must equal 100%):';
         container.appendChild(label);
         
         values.forEach(val => {
@@ -149,10 +149,15 @@ function renderBreakdownUI(type, inputId) {
             let inp = document.createElement('input');
             inp.type = 'number';
             inp.min = '0';
-            inp.step = '0.5';
-            inp.placeholder = 'hrs';
+            inp.max = '100';
+            inp.step = '1'; // Whole numbers only
+            inp.placeholder = '%';
             inp.value = breakdownState[type][val] || '';
-            inp.oninput = (e) => { breakdownState[type][val] = e.target.value; };
+            inp.oninput = (e) => { 
+                // Strip decimals or non-numeric characters
+                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                breakdownState[type][val] = e.target.value; 
+            };
             wrap.appendChild(inp);
             container.appendChild(wrap);
         });
@@ -330,6 +335,31 @@ function addLogEntry() {
 
     if (hourMode === 'average' && activityHoursInput > 24) return alert("Error: You cannot average more than 24 hours per day.");
 
+    // --- Validate Optional Percentage Breakdowns sum to 100 ---
+    const breakdownConfigs = [
+        { type: 'activity', name: 'Activity', items: activityType },
+        { type: 'vessel', name: 'Vessel Type', items: vesselType },
+        { type: 'equipment', name: 'System(s) Used', items: equipment },
+        { type: 'software', name: 'Software Used', items: software }
+    ];
+
+    for (let b of breakdownConfigs) {
+        if (b.items.length > 1) {
+            let sum = 0;
+            let hasValues = false;
+            for (let item of b.items) {
+                let val = breakdownState[b.type][item];
+                if (val && val.trim() !== '') {
+                    sum += parseInt(val, 10);
+                    hasValues = true;
+                }
+            }
+            if (hasValues && sum !== 100) {
+                return alert(`Error: The rough percentages for ${b.name} must add up to exactly 100%. Currently, it adds up to ${sum}%. Please adjust your entries or leave them all blank to distribute the hours evenly.`);
+            }
+        }
+    }
+
     const calculatedTotalHours = calculateTotalHours(startDate, endDate, activityHoursInput, hourMode, weekendMode);
 
     let dateDisplay = startDate;
@@ -399,7 +429,7 @@ function updateTable() {
         prevSelect.appendChild(opt);
 
         const vTypeStr = Array.isArray(log.vesselType) ? log.vesselType.join(', ') : (log.vesselType || '');
-        const actTypes = log.activityType || log.category || []; // backward compat
+        const actTypes = log.activityType || log.category || []; 
         const actDetail = log.activityDetail || log.activity || '';
 
         const tr = document.createElement('tr');
@@ -670,7 +700,6 @@ function exportProjectJSON() {
         exportDate: new Date().toISOString()
     };
 
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(projectData, null, 4));
     const blob = new Blob([JSON.stringify(projectData, null, 4)], { type: 'text/json' });
     nativeSaveAs(blob, `${userName.replace(/\s+/g, '_')}_NOAAlogbook.json`);
 }
@@ -689,7 +718,6 @@ function exportSummaryCSV() {
     csv.push("Machine Readable Data Summary");
     csv.push("Tier Working Towards,Year,Category,Item,Hours Logged");
     
-    // Summary Structure: Tier -> Year -> Category -> Item -> Hours
     let summary = {}; 
     
     projectLogs.forEach(log => {
@@ -702,18 +730,27 @@ function exportSummaryCSV() {
         
         const tgt = summary[tier][year];
         
-        // Helper logic to attribute hours to selected items
         function addHours(category, items, breakdown, distributeEvenly) {
             if (!items || items.length === 0) return;
-            // If they didn't provide a breakdown, we assume they used the ship/system for the FULL duration of the log.
-            // For Activities (Planning vs Acq), we distribute the time evenly if no breakdown is provided so we don't multiply hours magically.
+            
+            let hasBreakdown = false;
+            if (breakdown) {
+                // Check if any breakdown percentages were provided
+                hasBreakdown = items.some(item => breakdown[item] && breakdown[item].trim() !== "");
+            }
+
             const defaultHours = distributeEvenly ? (totalHours / items.length) : totalHours;
             
             items.forEach(item => {
                 let hrs = defaultHours;
-                if (breakdown && breakdown[item] && breakdown[item].trim() !== "") {
-                    hrs = parseFloat(breakdown[item]); // Use the exact granular hours the user provided
+                if (hasBreakdown && breakdown[item] && breakdown[item].trim() !== "") {
+                    // Convert the percentage to actual hours
+                    const pct = parseInt(breakdown[item], 10);
+                    hrs = totalHours * (pct / 100);
+                } else if (hasBreakdown && (!breakdown[item] || breakdown[item].trim() === "")) {
+                    hrs = 0; // If they broke down some but left this blank, it gets 0
                 }
+                
                 if (!tgt[category][item]) tgt[category][item] = 0;
                 tgt[category][item] += hrs;
             });
@@ -726,12 +763,11 @@ function exportSummaryCSV() {
         addHours('Software', log.softwareUsed, log.breakdowns?.software, false);
     });
     
-    // Flatten summary object into CSV rows
     for (const tier in summary) {
         for (const year in summary[tier]) {
             for (const cat in summary[tier][year]) {
                 for (const item in summary[tier][year][cat]) {
-                    csv.push(`"${tier}","${year}","${cat}","${item}",${summary[tier][year][cat][item]}`);
+                    csv.push(`"${tier}","${year}","${cat}","${item}",${summary[tier][year][cat][item].toFixed(2)}`);
                 }
             }
         }
@@ -952,7 +988,6 @@ function convertToCertificationJSON() {
         "data": certDataArray
     };
 
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(certJSON, null, 4));
     const blob = new Blob([JSON.stringify(certJSON, null, 4)], { type: 'text/json' });
     nativeSaveAs(blob, `${applicant.replace(/\s+/g, '_')}_Certification.json`);
 }
