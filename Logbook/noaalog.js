@@ -1,4 +1,4 @@
-const tierList = ["Tier 1", "Tier 2", "Tier 3"];
+const tierList = ["Tier 1", "Tier 2", "Tier 3", "HIC (Legacy)", "IHO CAT-A", "IHO CAT-B", "US - Certified Hydrographer", "US - Certified Master Hydrographer"];
 const defaultActivityList = ["Acquisition", "Processing", "Planning", "Integration"];
 const vesselTypesArray = ["Ship", "Launch", "Small Boat (under 65 feet)", "UxS", "Other", "N/A"];
 const fieldUnitList = ["Land-based", "Bell M. Shimada", "Fairweather", "Ferdinand R. Hassler", "Gordon Gunter", "Henry B. Bigelow", "Nancy Foster", "NRT Fernandina", "NRT Gulfport", "NRT New London", "NRT Patuxent", "NRT Seattle", "Okeanos Explorer", "Oregon II", "Oscar Dyson", "Oscar Elton Sette", "Pisces", "Rainier", "Reuben Lasker", "Ronald H. Brown", "Thomas Jefferson"];
@@ -12,8 +12,6 @@ let currentEditId = null;
 let breakdownState = { activity: {}, vessel: {}, equipment: {}, software: {} };
 
 // --- SECURITY & BACKWARD COMPATIBILITY HELPERS ---
-
-// Forces old v0.1 string data to become arrays so .join() and .forEach() don't crash the app
 function ensureArray(val) {
     if (!val) return [];
     return Array.isArray(val) ? val : [val];
@@ -344,7 +342,6 @@ function addLogEntry() {
 
     if (hourMode === 'average' && activityHoursInput > 24) return alert("Error: You cannot average more than 24 hours per day.");
 
-    // --- Validate Optional Percentage Breakdowns sum to 100 ---
     const breakdownConfigs = [
         { type: 'activity', name: 'Activity', items: activityType },
         { type: 'vessel', name: 'Vessel Type', items: vesselType },
@@ -827,86 +824,6 @@ function exportLogbookCSV() {
     const userName = document.getElementById('userName').value || "Logbook";
     const blob = new Blob([csvRows.join("\n")], { type: 'text/csv' });
     nativeSaveAs(blob, `${userName.replace(/\s+/g, '_')}_Logbook.csv`);
-}
-
-// --- EXPORT LOGIC: DOCX Mega Document ---
-function exportLogbookDoc() {
-    if (projectLogs.length === 0) return alert("Add at least one log entry before exporting!");
-
-    const { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, PageBreak } = docx;
-
-    const orgs = {};
-    projectLogs.forEach(log => {
-        const orgName = log.organization || "Unknown Organization";
-        const projName = log.projectName || "Unknown Project";
-
-        if (!orgs[orgName]) orgs[orgName] = {};
-        if (!orgs[orgName][projName]) orgs[orgName][projName] = [];
-        orgs[orgName][projName].push(log);
-    });
-
-    const docChildren = [];
-    let isFirstOrg = true;
-
-    for (const [orgName, projects] of Object.entries(orgs)) {
-        if (!isFirstOrg) docChildren.push(new Paragraph({ children: [new PageBreak()] }));
-        isFirstOrg = false;
-
-        docChildren.push(new Paragraph({ text: orgName, heading: HeadingLevel.HEADING_1, spacing: { after: 300 } }));
-
-        for (const [projName, logs] of Object.entries(projects)) {
-            docChildren.push(new Paragraph({ text: projName, heading: HeadingLevel.HEADING_2, spacing: { before: 300, after: 100 } }));
-
-            const projHours = logs.reduce((sum, l) => sum + l.hours, 0);
-            docChildren.push(new Paragraph({
-                children: [ new TextRun({ text: "Total Hours: ", bold: true }), new TextRun(`${projHours}`) ],
-                spacing: { after: 200 }
-            }));
-
-            const tableRows = [
-                new TableRow({
-                    children: ["Tier", "Date(s)", "Geo Loc", "Activity", "Hours", "Field Unit", "Detail", "Systems/Soft"].map(text => 
-                        new TableCell({
-                            children: [new Paragraph({ children: [new TextRun({ text: text, color: "FFFFFF", bold: true, size: 20 })] })],
-                            shading: { fill: "0055a4" },
-                            margins: { top: 100, bottom: 100, left: 100, right: 100 }
-                        })
-                    )
-                })
-            ];
-
-            logs.forEach(log => {
-                const sysUsed = ensureArray(log.systemsUsed);
-                const softUsed = ensureArray(log.softwareUsed);
-                const sysSoftText = `Sys: ${sysUsed.join(', ')}\nSoft: ${softUsed.join(', ')}`;
-                
-                const vTypes = ensureArray(log.vesselType);
-                const actTypes = ensureArray(log.activityType || log.category);
-                const actDetail = log.activityDetail || log.activity || '';
-                
-                tableRows.push(new TableRow({
-                    children: [
-                        new TableCell({ children: [new Paragraph({text: log.workingTowards || 'N/A', size: 20})], margins: { top: 100, bottom: 100, left: 100, right: 100 } }),
-                        new TableCell({ children: [new Paragraph({text: log.date || '', size: 20})], margins: { top: 100, bottom: 100, left: 100, right: 100 } }),
-                        new TableCell({ children: [new Paragraph({text: log.geoLoc || '', size: 20})], margins: { top: 100, bottom: 100, left: 100, right: 100 } }),
-                        new TableCell({ children: [new Paragraph({text: actTypes.join(', '), size: 20})], margins: { top: 100, bottom: 100, left: 100, right: 100 } }),
-                        new TableCell({ children: [new Paragraph({text: log.hours.toString(), size: 20})], margins: { top: 100, bottom: 100, left: 100, right: 100 } }),
-                        new TableCell({ children: [new Paragraph({text: `${log.fieldUnit || ''} (${vTypes.join(', ')})`, size: 20})], margins: { top: 100, bottom: 100, left: 100, right: 100 } }),
-                        new TableCell({ children: [new Paragraph({text: actDetail, size: 20})], margins: { top: 100, bottom: 100, left: 100, right: 100 } }),
-                        new TableCell({ children: [new Paragraph({text: sysSoftText, size: 20})], margins: { top: 100, bottom: 100, left: 100, right: 100 } })
-                    ]
-                }));
-            });
-
-            docChildren.push(new Table({ rows: tableRows, width: { size: 100, type: WidthType.PERCENTAGE } }));
-        }
-    }
-
-    const doc = new Document({ sections: [{ properties: {}, children: docChildren }] });
-    Packer.toBlob(doc).then(blob => {
-        const userName = document.getElementById('userName').value || "Logbook";
-        nativeSaveAs(blob, `${userName.replace(/\s+/g, '_')}_Logbook.docx`);
-    });
 }
 
 function convertToCertificationJSON() {
