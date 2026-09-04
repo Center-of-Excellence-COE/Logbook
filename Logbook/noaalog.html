@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOAA - Tier - Logbook</title>
+    <title>NOAA - Logbook for Tiers</title>
     
     <!-- Libraries for Document and File Generation (Secured with SRI) -->
     <script src="https://unpkg.com/docx@7.1.0/build/index.js" integrity="sha384-nZg2A1bXqT6F0qE+XqgXpT/lT6Xg+XX+XqgXpT/lT6Xg+XX+XqgXpT/lT6Xg+XX" crossorigin="anonymous"></script>
     
-    <!-- Link to the extracted stylesheet -->
     <link rel="stylesheet" href="noaalog.css">
 </head>
 <body>
@@ -17,39 +16,32 @@
     
     <div class="header-flex">
         <div>
-            <h1>NOAA - Tier - Logbook <span id="app-version">v0.1</span></h1>
+            <h1>NOAA - Logbook for Tiers <span id="app-version">v0.2</span></h1>
             <p style="margin:0; color:#555;">Track daily log entries and compile them into a Project JSON.</p>
         </div>
         <div class="header-buttons">
             
-            <!-- LOAD DROPDOWN -->
             <div class="dropdown">
                 <button onclick="toggleTopMenu('loadDropdownMenu')" class="btn btn-load dropbtn">📄 LOAD ▼</button>
                 <div id="loadDropdownMenu" class="dropdown-content">
-                    
-                    <!-- COMBINED METADATA/DR BUTTON WITH TOOLTIP -->
-                    <a href="#" onclick="document.getElementById('importXMLFile').click()" title="This import works for DR's prior to 2024 and Metadata reports up to 2026 if there are any issue please submit a bug report">NOAA - OCS - Metadata/DR ℹ️</a>
-                    
-                    <!-- PROJECT INSTRUCTIONS BUTTON WITH TOOLTIP -->
-                    <a href="#" onclick="document.getElementById('importXMLFile').click()" title="Currently only supports Project Instructions from 2026. Updates will be needed for older or future PIs.">NOAA-OCS-XML: Project Instructions 2026 ℹ️</a>
-                    
+                    <a href="#" onclick="document.getElementById('importXMLFile').click()" title="Works for DR's prior to 2024 and Metadata reports up to 2026">NOAA - OCS - Metadata/DR ℹ️</a>
+                    <a href="#" onclick="document.getElementById('importXMLFile').click()" title="Supports Project Instructions from 2026.">NOAA-OCS-XML: Project Instructions 2026 ℹ️</a>
                     <div class="dropdown-divider">Existing Progress</div>
                     <a href="#" onclick="document.getElementById('importFile').click()">Load Logbook JSON</a>
                 </div>
             </div>
 
-            <!-- EXPORT DROPDOWN -->
             <div class="dropdown">
                 <button onclick="toggleTopMenu('exportDropdownMenu')" class="btn btn-export dropbtn">💾 EXPORT ▼</button>
                 <div id="exportDropdownMenu" class="dropdown-content">
-                    <a href="#" onclick="exportProjectJSON()">Logbook JSON</a>
-                    <a href="#" onclick="exportLogbookCSV()">Logbook CSV</a>
+                    <a href="#" onclick="exportProjectJSON()">Logbook JSON (Save File)</a>
+                    <a href="#" onclick="exportSummaryCSV()">Summary CSV (Tier Breakdown)</a>
+                    <a href="#" onclick="exportLogbookCSV()">Full Logbook CSV</a>
                     <a href="#" onclick="exportLogbookDoc()">Logbook Doc</a>
                     <a href="#" onclick="convertToCertificationJSON()">Convert to Certification JSON</a>
                 </div>
             </div>
 
-            <!-- Hidden File Inputs -->
             <input type="file" id="importXMLFile" accept=".xml" style="display: none;" onchange="loadNOAAXML(event)">
             <input type="file" id="importFile" accept=".json" style="display: none;" onchange="loadProjectJSON(event)">
         </div>
@@ -57,7 +49,7 @@
 
     <div class="section-box" style="background-color: white; border-color: var(--primary);">
         <h2>1. User Information</h2>
-        <div class="grid-2">
+        <div class="grid-3">
             <div class="form-group">
                 <label for="userName">Full Name</label>
                 <input type="text" id="userName" placeholder="e.g., Jane Doe">
@@ -66,13 +58,21 @@
                 <label for="userEmail">Email Address</label>
                 <input type="email" id="userEmail" placeholder="e.g., jane.doe@noaa.gov">
             </div>
+            <div class="form-group">
+                <label for="currentQualSelect">Current Qualification(s)</label>
+                <span class="help-text">Type separated by commas, or check below</span>
+                <input type="text" id="currentQualSelect" placeholder="e.g. Tier 1">
+                <div class="dropdown-checklist">
+                    <span class="anchor" onclick="toggleCheckList('currentQualList', event)">☑ Select Known... ⏷</span>
+                    <ul id="currentQualList" class="items"></ul>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="section-box" id="logEntrySection">
         <h2>2. Add / Edit Log Entry</h2>
         
-        <!-- EXPANDED ORGANIZATION OPTIONS -->
         <datalist id="orgOptions">
             <option value="NOAA Ship - Thomas Jefferson">
             <option value="NOAA Ship - Fairweather">
@@ -93,7 +93,7 @@
             <option value="Private Industry / Contractor">
         </datalist>
 
-        <div class="grid-2">
+        <div class="grid-3">
             <div class="form-group">
                 <label for="projectName">Project Name / Cruise</label>
                 <input type="text" id="projectName" placeholder="e.g., OPR-P356-FA-24">
@@ -101,6 +101,15 @@
             <div class="form-group">
                 <label for="jobTitle">Job Title</label>
                 <input type="text" id="jobTitle" placeholder="e.g., Tier 1 Mapping Specialist">
+            </div>
+            <div class="form-group">
+                <label for="workingTowards">Working Towards (This Log)</label>
+                <select id="workingTowards">
+                    <option value="Tier 1">Tier 1</option>
+                    <option value="Tier 2">Tier 2</option>
+                    <option value="Tier 3">Tier 3</option>
+                    <option value="Other">Other / Maintaining</option>
+                </select>
             </div>
             <div class="form-group full-width">
                 <label for="projectDescription">Project Description</label>
@@ -112,10 +121,8 @@
 
         <div class="grid-4">
             <div class="form-group">
-                <label for="organization" class="tooltip-label" title="This is the organization that employs you for this specific survey. For example, if you are employed by a ship or stationed on a ship, select that ship, even if you did this project on another vessel. If you are employed by a branch but augmenting on a ship, put the branch. This field is used to organize your log by your employment group for future exports to the NSPS-THSOA Certification.">
-                    Organization ℹ️
-                </label>
-                <input type="text" id="organization" list="orgOptions" placeholder="Select or type..." title="This is the organization that employs you for this specific survey. For example, if you are employed by a ship or stationed on a ship, select that ship, even if you did this project on another vessel. If you are employed by a branch but augmenting on a ship, put the branch. This field is used to organize your log by your employment group for future exports to the NSPS-THSOA Certification.">
+                <label for="organization" class="tooltip-label" title="This is the organization that employs you for this specific survey.">Organization ℹ️</label>
+                <input type="text" id="organization" list="orgOptions" placeholder="Select or type...">
             </div>
             <div class="form-group">
                 <label>Date Range</label>
@@ -126,19 +133,19 @@
             </div>
             
             <div class="form-group">
-                <label for="activityCategoryInput">Activity Category</label>
+                <label for="activityInput">Activity</label>
                 <span class="help-text">Type separated by commas, or check below</span>
-                <input type="text" id="activityCategoryInput" placeholder="e.g. Acquisition, Planning">
+                <input type="text" id="activityInput" placeholder="e.g. Acquisition, Planning">
                 <div class="dropdown-checklist">
-                    <span class="anchor" onclick="toggleCheckList('activityCategoryList', event)">☑ Select Known... ⏷</span>
-                    <ul id="activityCategoryList" class="items"></ul>
+                    <span class="anchor" onclick="toggleCheckList('activityList', event)">☑ Select Known... ⏷</span>
+                    <ul id="activityList" class="items"></ul>
                 </div>
+                <div id="activityBreakdown" class="breakdown-container"></div>
             </div>
 
             <div class="form-group">
                 <label for="activityHours">Hours Logged</label>
                 <input type="number" id="activityHours" min="0" step="0.5" placeholder="e.g., 8">
-                
                 <div class="hour-toggles">
                     <label><input type="radio" name="hourMode" value="total" checked onchange="toggleWeekendOpts()"> Total for Date Range</label><br>
                     <label><input type="radio" name="hourMode" value="average" onchange="toggleWeekendOpts()"> Average per Day</label>
@@ -147,13 +154,12 @@
                     <label><input type="radio" name="weekendMode" value="no" checked> Didn't work weekends</label><br>
                     <label><input type="radio" name="weekendMode" value="yes"> Worked weekends</label>
                 </div>
-
             </div>
         </div>
 
         <div class="form-group">
-            <label for="activityPerformed">Activity Performed</label>
-            <input type="text" id="activityPerformed" placeholder="Brief description of duties performed...">
+            <label for="activityDetailInput">Activity Detail</label>
+            <input type="text" id="activityDetailInput" placeholder="Brief description of specific duties performed...">
         </div>
 
         <div class="grid-3">
@@ -163,7 +169,6 @@
                 <datalist id="fieldUnitDatalist"></datalist>
             </div>
 
-            <!-- VESSEL TYPE DROPDOWN -->
             <div class="form-group">
                 <label for="vesselTypeInput">Vessel Type</label>
                 <span class="help-text">Type separated by commas, or check below</span>
@@ -172,6 +177,7 @@
                     <span class="anchor" onclick="toggleCheckList('vesselTypeList', event)">☑ Select Known... ⏷</span>
                     <ul id="vesselTypeList" class="items"></ul>
                 </div>
+                <div id="vesselBreakdown" class="breakdown-container"></div>
             </div>
             
             <div class="form-group">
@@ -193,6 +199,7 @@
                     <span class="anchor" onclick="toggleCheckList('equipmentList', event)">☑ Select Known Systems... ⏷</span>
                     <ul id="equipmentList" class="items"></ul>
                 </div>
+                <div id="equipmentBreakdown" class="breakdown-container"></div>
             </div>
 
             <div class="form-group">
@@ -203,10 +210,10 @@
                     <span class="anchor" onclick="toggleCheckList('softwareList', event)">☑ Select Known Software... ⏷</span>
                     <ul id="softwareList" class="items"></ul>
                 </div>
+                <div id="softwareBreakdown" class="breakdown-container"></div>
             </div>
             
-            <!-- LOAD PREVIOUS LOG SELECTOR -->
-            <div class="form-group" style="display: flex; flex-direction: column; justify-content: center;">
+            <div class="form-group full-width" style="display: flex; flex-direction: column; justify-content: center;">
                 <label for="prevLogSelect">Load Previous Tools & Systems</label>
                 <div style="display: flex; gap: 10px;">
                     <select id="prevLogSelect" style="flex-grow: 1; padding: 6px;">
@@ -228,16 +235,16 @@
         <table id="logTable">
             <thead>
                 <tr>
-                    <th>Organization</th>
+                    <th>Tier</th>
                     <th>Project</th>
                     <th>Geo Loc</th>
                     <th>Date(s)</th>
-                    <th>Category</th>
+                    <th>Activity</th>
                     <th>Hours</th>
                     <th>Field Unit (Vessel Type)</th>
                     <th>Systems</th>
                     <th>Software</th>
-                    <th>Activity</th>
+                    <th>Detail</th>
                     <th>Action</th>
                 </tr>
             </thead>
