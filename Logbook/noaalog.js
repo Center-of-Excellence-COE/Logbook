@@ -32,6 +32,17 @@ function sanitizeCSV(str) {
     return s;
 }
 
+// Helper to append percentages to text strings (e.g., "CARIS (80%)")
+function formatWithBreakdown(items, breakdown) {
+    if (!items || items.length === 0) return "";
+    return items.map(item => {
+        if (breakdown && breakdown[item] && breakdown[item].trim() !== "") {
+            return `${item} (${breakdown[item]}%)`;
+        }
+        return item;
+    }).join(', ');
+}
+
 function nativeSaveAs(blob, filename) {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -433,10 +444,11 @@ function updateTable() {
         opt.textContent = `${sanitizeHTML(log.projectName || 'Unnamed')} - ${sanitizeHTML(log.date)}`;
         prevSelect.appendChild(opt);
 
-        const vTypes = ensureArray(log.vesselType);
-        const actTypes = ensureArray(log.activityType || log.category);
-        const sysUsed = ensureArray(log.systemsUsed);
-        const softUsed = ensureArray(log.softwareUsed);
+        // Format items with their percentages for the UI table
+        const vTypesStr = formatWithBreakdown(ensureArray(log.vesselType), log.breakdowns?.vessel);
+        const actTypesStr = formatWithBreakdown(ensureArray(log.activityType || log.category), log.breakdowns?.activity);
+        const sysUsedStr = formatWithBreakdown(ensureArray(log.systemsUsed), log.breakdowns?.equipment);
+        const softUsedStr = formatWithBreakdown(ensureArray(log.softwareUsed), log.breakdowns?.software);
         
         const actDetail = log.activityDetail || log.activity || '';
 
@@ -446,11 +458,11 @@ function updateTable() {
             <td>${sanitizeHTML(log.projectName || 'N/A')}</td>
             <td>${sanitizeHTML(log.geoLoc || 'N/A')}</td>
             <td>${sanitizeHTML(log.date)}</td>
-            <td>${sanitizeHTML(actTypes.join(', '))}</td>
+            <td>${sanitizeHTML(actTypesStr)}</td>
             <td>${log.hours}</td>
-            <td>${sanitizeHTML(log.fieldUnit)} (${sanitizeHTML(vTypes.join(', '))})</td>
-            <td>${sanitizeHTML(sysUsed.join(', '))}</td>
-            <td>${sanitizeHTML(softUsed.join(', '))}</td>
+            <td>${sanitizeHTML(log.fieldUnit)} (${sanitizeHTML(vTypesStr)})</td>
+            <td>${sanitizeHTML(sysUsedStr)}</td>
+            <td>${sanitizeHTML(softUsedStr)}</td>
             <td>${sanitizeHTML(actDetail)}</td>
             <td style="white-space: nowrap;">
                 <button style="background:#f39c12; padding: 5px 10px; margin:0 5px 0 0;" onclick="editEntry('${sanitizeHTML(log.id)}')" title="Edit Entry">✎</button>
@@ -724,7 +736,7 @@ function exportSummaryCSV() {
     csv.push(`Current Qualification(s),${sanitizeCSV(currentQuals)}`);
     csv.push("");
     csv.push("Machine Readable Data Summary");
-    csv.push("Tier Working Towards,Year,Category,Item,Hours Logged");
+    csv.push("Tier Working Towards,Year,Category,Item,Hours Logged (Calculated via %)");
     
     let summary = {}; 
     
@@ -800,20 +812,21 @@ function exportLogbookCSV() {
         const proj = `"${sanitizeCSV(log.projectName || '').replace(/"/g, '""')}"`;
         const geoLoc = `"${sanitizeCSV(log.geoLoc || '').replace(/"/g, '""')}"`;
         const dates = `"${sanitizeCSV(log.date || '').replace(/"/g, '""')}"`;
-        
-        const actTypes = ensureArray(log.activityType || log.category);
-        const act = `"${sanitizeCSV(actTypes.join(', ')).replace(/"/g, '""')}"`;
         const hours = log.hours;
         
-        const vTypes = ensureArray(log.vesselType);
-        const fieldUnitCombined = log.fieldUnit ? `${log.fieldUnit} (${vTypes.join(', ')})` : '';
+        // Use formatter to attach percentages to exported CSV fields
+        const actTypesStr = formatWithBreakdown(ensureArray(log.activityType || log.category), log.breakdowns?.activity);
+        const act = `"${sanitizeCSV(actTypesStr).replace(/"/g, '""')}"`;
+        
+        const vTypesStr = formatWithBreakdown(ensureArray(log.vesselType), log.breakdowns?.vessel);
+        const fieldUnitCombined = log.fieldUnit ? `${log.fieldUnit} (${vTypesStr})` : '';
         const fieldUnit = `"${sanitizeCSV(fieldUnitCombined).replace(/"/g, '""')}"`;
         
-        const sysUsed = ensureArray(log.systemsUsed);
-        const systems = `"${sanitizeCSV(sysUsed.join(', ')).replace(/"/g, '""')}"`;
+        const sysUsedStr = formatWithBreakdown(ensureArray(log.systemsUsed), log.breakdowns?.equipment);
+        const systems = `"${sanitizeCSV(sysUsedStr).replace(/"/g, '""')}"`;
         
-        const softUsed = ensureArray(log.softwareUsed);
-        const software = `"${sanitizeCSV(softUsed.join(', ')).replace(/"/g, '""')}"`;
+        const softUsedStr = formatWithBreakdown(ensureArray(log.softwareUsed), log.breakdowns?.software);
+        const software = `"${sanitizeCSV(softUsedStr).replace(/"/g, '""')}"`;
         
         const detailStr = log.activityDetail || log.activity || '';
         const activity = `"${sanitizeCSV(detailStr).replace(/"/g, '""')}"`;
