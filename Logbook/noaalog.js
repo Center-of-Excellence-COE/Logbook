@@ -11,7 +11,14 @@ let currentEditId = null;
 // Store breakdown inputs as user types them
 let breakdownState = { activity: {}, vessel: {}, equipment: {}, software: {} };
 
-// --- SECURITY SANITIZATION HELPERS ---
+// --- SECURITY & BACKWARD COMPATIBILITY HELPERS ---
+
+// Forces old v0.1 string data to become arrays so .join() and .forEach() don't crash the app
+function ensureArray(val) {
+    if (!val) return [];
+    return Array.isArray(val) ? val : [val];
+}
+
 function sanitizeHTML(str) {
     if (str === null || str === undefined) return '';
     return String(str).replace(/[&<>'"]/g, function(match) {
@@ -134,7 +141,6 @@ function renderBreakdownUI(type, inputId) {
     
     container.innerHTML = '';
     
-    // Only show the breakdown boxes if they select MORE THAN ONE item
     if (values.length > 1) {
         let label = document.createElement('div');
         label.style.width = '100%';
@@ -150,11 +156,10 @@ function renderBreakdownUI(type, inputId) {
             inp.type = 'number';
             inp.min = '0';
             inp.max = '100';
-            inp.step = '1'; // Whole numbers only
+            inp.step = '1';
             inp.placeholder = '%';
             inp.value = breakdownState[type][val] || '';
             inp.oninput = (e) => { 
-                // Strip decimals or non-numeric characters
                 e.target.value = e.target.value.replace(/[^0-9]/g, '');
                 breakdownState[type][val] = e.target.value; 
             };
@@ -162,7 +167,6 @@ function renderBreakdownUI(type, inputId) {
             container.appendChild(wrap);
         });
     } else if (values.length === 1) {
-        // If only 1 item, it intrinsically takes 100% of the logged hours, no breakdown needed
         breakdownState[type] = {}; 
     }
 }
@@ -208,17 +212,21 @@ function loadPreviousTools() {
     const log = projectLogs.find(l => l.id === logId);
     if (!log) return;
     
-    document.getElementById('activityInput').value = (log.activityType || []).join(', ');
+    const actTypes = ensureArray(log.activityType || log.category);
+    const vTypes = ensureArray(log.vesselType);
+    const sysUsed = ensureArray(log.systemsUsed);
+    const softUsed = ensureArray(log.softwareUsed);
+
+    document.getElementById('activityInput').value = actTypes.join(', ');
     syncCheckboxes('activityInput', 'activityList', 'activity');
     
-    const vTypeStr = Array.isArray(log.vesselType) ? log.vesselType.join(', ') : (log.vesselType || '');
-    document.getElementById('vesselTypeInput').value = vTypeStr;
+    document.getElementById('vesselTypeInput').value = vTypes.join(', ');
     syncCheckboxes('vesselTypeInput', 'vesselTypeList', 'vessel');
 
-    document.getElementById('equipmentInput').value = (log.systemsUsed || []).join(', ');
+    document.getElementById('equipmentInput').value = sysUsed.join(', ');
     syncCheckboxes('equipmentInput', 'equipmentList', 'equipment');
     
-    document.getElementById('softwareInput').value = (log.softwareUsed || []).join(', ');
+    document.getElementById('softwareInput').value = softUsed.join(', ');
     syncCheckboxes('softwareInput', 'softwareList', 'software');
 }
 
@@ -254,18 +262,19 @@ function editEntry(id) {
     document.getElementById('activityDetailInput').value = log.activityDetail || log.activity || '';
     document.getElementById('fieldUnit').value = log.fieldUnit || '';
 
-    const vTypeStr = Array.isArray(log.vesselType) ? log.vesselType.join(', ') : (log.vesselType || '');
-    document.getElementById('vesselTypeInput').value = vTypeStr;
+    const actTypes = ensureArray(log.activityType || log.category);
+    const vTypes = ensureArray(log.vesselType);
+    const sysUsed = ensureArray(log.systemsUsed);
+    const softUsed = ensureArray(log.softwareUsed);
+
+    document.getElementById('vesselTypeInput').value = vTypes.join(', ');
+    document.getElementById('activityInput').value = actTypes.join(', ');
+    document.getElementById('equipmentInput').value = sysUsed.join(', ');
+    document.getElementById('softwareInput').value = softUsed.join(', ');
     
     document.querySelectorAll('input[name="hourMode"]').forEach(r => r.checked = (r.value === (log.hourMode || 'total')));
     document.querySelectorAll('input[name="weekendMode"]').forEach(r => r.checked = (r.value === (log.weekendMode || 'no')));
     toggleWeekendOpts(); 
-
-    // Support backward compatibility for old JSON (category -> activityType)
-    const actTypes = log.activityType || log.category || [];
-    document.getElementById('activityInput').value = actTypes.join(', ');
-    document.getElementById('equipmentInput').value = (log.systemsUsed || []).join(', ');
-    document.getElementById('softwareInput').value = (log.softwareUsed || []).join(', ');
 
     breakdownState = JSON.parse(JSON.stringify(log.breakdowns || { activity: {}, vessel: {}, equipment: {}, software: {} }));
 
@@ -367,7 +376,6 @@ function addLogEntry() {
     else if (!startDate && endDate) dateDisplay = endDate; 
     else if (!startDate && !endDate) dateDisplay = "No Date Provided";
 
-    // Deep copy current breakdown state so it doesn't reference the live UI
     const savedBreakdowns = JSON.parse(JSON.stringify(breakdownState));
 
     const entry = {
@@ -428,8 +436,11 @@ function updateTable() {
         opt.textContent = `${sanitizeHTML(log.projectName || 'Unnamed')} - ${sanitizeHTML(log.date)}`;
         prevSelect.appendChild(opt);
 
-        const vTypeStr = Array.isArray(log.vesselType) ? log.vesselType.join(', ') : (log.vesselType || '');
-        const actTypes = log.activityType || log.category || []; 
+        const vTypes = ensureArray(log.vesselType);
+        const actTypes = ensureArray(log.activityType || log.category);
+        const sysUsed = ensureArray(log.systemsUsed);
+        const softUsed = ensureArray(log.softwareUsed);
+        
         const actDetail = log.activityDetail || log.activity || '';
 
         const tr = document.createElement('tr');
@@ -440,9 +451,9 @@ function updateTable() {
             <td>${sanitizeHTML(log.date)}</td>
             <td>${sanitizeHTML(actTypes.join(', '))}</td>
             <td>${log.hours}</td>
-            <td>${sanitizeHTML(log.fieldUnit)} (${sanitizeHTML(vTypeStr)})</td>
-            <td>${sanitizeHTML((log.systemsUsed || []).join(', '))}</td>
-            <td>${sanitizeHTML((log.softwareUsed || []).join(', '))}</td>
+            <td>${sanitizeHTML(log.fieldUnit)} (${sanitizeHTML(vTypes.join(', '))})</td>
+            <td>${sanitizeHTML(sysUsed.join(', '))}</td>
+            <td>${sanitizeHTML(softUsed.join(', '))}</td>
             <td>${sanitizeHTML(actDetail)}</td>
             <td style="white-space: nowrap;">
                 <button style="background:#f39c12; padding: 5px 10px; margin:0 5px 0 0;" onclick="editEntry('${sanitizeHTML(log.id)}')" title="Edit Entry">✎</button>
@@ -735,7 +746,6 @@ function exportSummaryCSV() {
             
             let hasBreakdown = false;
             if (breakdown) {
-                // Check if any breakdown percentages were provided
                 hasBreakdown = items.some(item => breakdown[item] && breakdown[item].trim() !== "");
             }
 
@@ -744,11 +754,10 @@ function exportSummaryCSV() {
             items.forEach(item => {
                 let hrs = defaultHours;
                 if (hasBreakdown && breakdown[item] && breakdown[item].trim() !== "") {
-                    // Convert the percentage to actual hours
                     const pct = parseInt(breakdown[item], 10);
                     hrs = totalHours * (pct / 100);
                 } else if (hasBreakdown && (!breakdown[item] || breakdown[item].trim() === "")) {
-                    hrs = 0; // If they broke down some but left this blank, it gets 0
+                    hrs = 0; 
                 }
                 
                 if (!tgt[category][item]) tgt[category][item] = 0;
@@ -756,11 +765,15 @@ function exportSummaryCSV() {
             });
         }
         
-        const actTypes = log.activityType || log.category || [];
+        const actTypes = ensureArray(log.activityType || log.category);
+        const vTypes = ensureArray(log.vesselType);
+        const sysUsed = ensureArray(log.systemsUsed);
+        const softUsed = ensureArray(log.softwareUsed);
+
         addHours('Activity', actTypes, log.breakdowns?.activity, true);
-        addHours('VesselType', log.vesselType, log.breakdowns?.vessel, false);
-        addHours('Systems', log.systemsUsed, log.breakdowns?.equipment, false);
-        addHours('Software', log.softwareUsed, log.breakdowns?.software, false);
+        addHours('VesselType', vTypes, log.breakdowns?.vessel, false);
+        addHours('Systems', sysUsed, log.breakdowns?.equipment, false);
+        addHours('Software', softUsed, log.breakdowns?.software, false);
     });
     
     for (const tier in summary) {
@@ -777,7 +790,6 @@ function exportSummaryCSV() {
     nativeSaveAs(blob, `${userName.replace(/\s+/g, '_')}_Summary.csv`);
 }
 
-
 // --- EXPORT LOGIC: FULL CSV ---
 function exportLogbookCSV() {
     if (projectLogs.length === 0) return alert("Add at least one log entry before exporting!");
@@ -791,16 +803,21 @@ function exportLogbookCSV() {
         const proj = `"${sanitizeCSV(log.projectName || '').replace(/"/g, '""')}"`;
         const geoLoc = `"${sanitizeCSV(log.geoLoc || '').replace(/"/g, '""')}"`;
         const dates = `"${sanitizeCSV(log.date || '').replace(/"/g, '""')}"`;
-        const actTypes = log.activityType || log.category || [];
+        
+        const actTypes = ensureArray(log.activityType || log.category);
         const act = `"${sanitizeCSV(actTypes.join(', ')).replace(/"/g, '""')}"`;
         const hours = log.hours;
         
-        const vTypeStr = Array.isArray(log.vesselType) ? log.vesselType.join(', ') : (log.vesselType || '');
-        const fieldUnitCombined = log.fieldUnit ? `${log.fieldUnit} (${vTypeStr})` : '';
+        const vTypes = ensureArray(log.vesselType);
+        const fieldUnitCombined = log.fieldUnit ? `${log.fieldUnit} (${vTypes.join(', ')})` : '';
         const fieldUnit = `"${sanitizeCSV(fieldUnitCombined).replace(/"/g, '""')}"`;
         
-        const systems = `"${sanitizeCSV((log.systemsUsed || []).join(', ')).replace(/"/g, '""')}"`;
-        const software = `"${sanitizeCSV((log.softwareUsed || []).join(', ')).replace(/"/g, '""')}"`;
+        const sysUsed = ensureArray(log.systemsUsed);
+        const systems = `"${sanitizeCSV(sysUsed.join(', ')).replace(/"/g, '""')}"`;
+        
+        const softUsed = ensureArray(log.softwareUsed);
+        const software = `"${sanitizeCSV(softUsed.join(', ')).replace(/"/g, '""')}"`;
+        
         const detailStr = log.activityDetail || log.activity || '';
         const activity = `"${sanitizeCSV(detailStr).replace(/"/g, '""')}"`;
 
@@ -859,9 +876,12 @@ function exportLogbookDoc() {
             ];
 
             logs.forEach(log => {
-                const sysSoftText = `Sys: ${(log.systemsUsed || []).join(', ')}\nSoft: ${(log.softwareUsed || []).join(', ')}`;
-                const vTypeStr = Array.isArray(log.vesselType) ? log.vesselType.join(', ') : (log.vesselType || '');
-                const actTypes = log.activityType || log.category || [];
+                const sysUsed = ensureArray(log.systemsUsed);
+                const softUsed = ensureArray(log.softwareUsed);
+                const sysSoftText = `Sys: ${sysUsed.join(', ')}\nSoft: ${softUsed.join(', ')}`;
+                
+                const vTypes = ensureArray(log.vesselType);
+                const actTypes = ensureArray(log.activityType || log.category);
                 const actDetail = log.activityDetail || log.activity || '';
                 
                 tableRows.push(new TableRow({
@@ -871,7 +891,7 @@ function exportLogbookDoc() {
                         new TableCell({ children: [new Paragraph({text: log.geoLoc || '', size: 20})], margins: { top: 100, bottom: 100, left: 100, right: 100 } }),
                         new TableCell({ children: [new Paragraph({text: actTypes.join(', '), size: 20})], margins: { top: 100, bottom: 100, left: 100, right: 100 } }),
                         new TableCell({ children: [new Paragraph({text: log.hours.toString(), size: 20})], margins: { top: 100, bottom: 100, left: 100, right: 100 } }),
-                        new TableCell({ children: [new Paragraph({text: `${log.fieldUnit || ''} (${vTypeStr})`, size: 20})], margins: { top: 100, bottom: 100, left: 100, right: 100 } }),
+                        new TableCell({ children: [new Paragraph({text: `${log.fieldUnit || ''} (${vTypes.join(', ')})`, size: 20})], margins: { top: 100, bottom: 100, left: 100, right: 100 } }),
                         new TableCell({ children: [new Paragraph({text: actDetail, size: 20})], margins: { top: 100, bottom: 100, left: 100, right: 100 } }),
                         new TableCell({ children: [new Paragraph({text: sysSoftText, size: 20})], margins: { top: 100, bottom: 100, left: 100, right: 100 } })
                     ]
@@ -923,7 +943,8 @@ function convertToCertificationJSON() {
         const actDetail = log.activityDetail || log.activity || "None";
         const pStart = log.startDate || "Unknown Start Date";
         const pEnd = log.endDate || (log.startDate ? log.startDate : "Unknown End Date");
-        const actTypes = log.activityType || log.category || [];
+        
+        const actTypes = ensureArray(log.activityType || log.category);
         const pCategory = (actTypes.length > 0) ? actTypes.join(', ') : "None";
         
         groupedLogs[org].j_projs.add(`${pName} - ${pDesc}`);
@@ -931,8 +952,11 @@ function convertToCertificationJSON() {
         const respString = `From ${pStart} to ${pEnd} for ${pName}: activities: ${pCategory}, details: ${actDetail}`;
         groupedLogs[org].j_resps.add(respString);
 
-        (log.systemsUsed || []).forEach(sys => { if(sys) groupedLogs[org].systems.add(sys.trim()); });
-        (log.softwareUsed || []).forEach(soft => { if(soft) groupedLogs[org].software.add(soft.trim()); });
+        const sysUsed = ensureArray(log.systemsUsed);
+        sysUsed.forEach(sys => { if(sys) groupedLogs[org].systems.add(sys.trim()); });
+        
+        const softUsed = ensureArray(log.softwareUsed);
+        softUsed.forEach(soft => { if(soft) groupedLogs[org].software.add(soft.trim()); });
     });
 
     const certDataArray = [];
