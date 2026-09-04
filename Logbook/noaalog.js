@@ -7,6 +7,22 @@ const softwareList = ["N/A", "CARIS", "Charlene", "Fledermaus", "FMGT", "HYPACK"
 let projectLogs = [];
 let currentEditId = null; 
 
+// --- SECURITY SANITIZATION HELPERS ---
+function sanitizeHTML(str) {
+    if (str === null || str === undefined) return '';
+    return String(str).replace(/[&<>'"]/g, function(match) {
+        const escape = { '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' };
+        return escape[match];
+    });
+}
+
+function sanitizeCSV(str) {
+    if (str === null || str === undefined) return '';
+    let s = String(str);
+    if (/^[=+\-@]/.test(s)) s = "'" + s; // Prevent CSV Formula Injection
+    return s;
+}
+
 // --- NATIVE FILE SAVING ---
 function nativeSaveAs(blob, filename) {
     const url = URL.createObjectURL(blob);
@@ -329,25 +345,27 @@ function updateTable() {
         
         const opt = document.createElement('option');
         opt.value = log.id;
-        opt.textContent = `${log.projectName || 'Unnamed'} - ${log.date}`;
+        opt.textContent = `${sanitizeHTML(log.projectName || 'Unnamed')} - ${sanitizeHTML(log.date)}`;
         prevSelect.appendChild(opt);
 
         const vTypeStr = Array.isArray(log.vesselType) ? log.vesselType.join(', ') : (log.vesselType || '');
         const tr = document.createElement('tr');
+        
+        // Secured DOM Injection
         tr.innerHTML = `
-            <td><strong>${log.organization || 'N/A'}</strong></td>
-            <td>${log.projectName || 'N/A'}</td>
-            <td>${log.geoLoc || 'N/A'}</td>
-            <td>${log.date}</td>
-            <td>${(log.category || []).join(', ')}</td>
+            <td><strong>${sanitizeHTML(log.organization || 'N/A')}</strong></td>
+            <td>${sanitizeHTML(log.projectName || 'N/A')}</td>
+            <td>${sanitizeHTML(log.geoLoc || 'N/A')}</td>
+            <td>${sanitizeHTML(log.date)}</td>
+            <td>${sanitizeHTML((log.category || []).join(', '))}</td>
             <td>${log.hours}</td>
-            <td>${log.fieldUnit} (${vTypeStr})</td>
-            <td>${(log.systemsUsed || []).join(', ')}</td>
-            <td>${(log.softwareUsed || []).join(', ')}</td>
-            <td>${log.activity}</td>
+            <td>${sanitizeHTML(log.fieldUnit)} (${sanitizeHTML(vTypeStr)})</td>
+            <td>${sanitizeHTML((log.systemsUsed || []).join(', '))}</td>
+            <td>${sanitizeHTML((log.softwareUsed || []).join(', '))}</td>
+            <td>${sanitizeHTML(log.activity)}</td>
             <td style="white-space: nowrap;">
-                <button style="background:#f39c12; padding: 5px 10px; margin:0 5px 0 0;" onclick="editEntry('${log.id}')" title="Edit Entry">✎</button>
-                <button style="background:red; padding: 5px 10px; margin:0;" onclick="removeEntry('${log.id}')" title="Delete Entry">X</button>
+                <button style="background:#f39c12; padding: 5px 10px; margin:0 5px 0 0;" onclick="editEntry('${sanitizeHTML(log.id)}')" title="Edit Entry">✎</button>
+                <button style="background:red; padding: 5px 10px; margin:0;" onclick="removeEntry('${sanitizeHTML(log.id)}')" title="Delete Entry">X</button>
             </td>
         `;
         tbody.appendChild(tr);
@@ -632,7 +650,7 @@ function exportProjectJSON() {
     downloadAnchorNode.remove();
 }
 
-// --- EXPORT LOGIC: CSV ---
+// --- EXPORT LOGIC: CSV (Secured) ---
 function exportLogbookCSV() {
     if (projectLogs.length === 0) return alert("Add at least one log entry before exporting!");
 
@@ -640,19 +658,21 @@ function exportLogbookCSV() {
     let csvRows = [headers.join(",")];
 
     projectLogs.forEach(log => {
-        const org = `"${(log.organization || '').replace(/"/g, '""')}"`;
-        const proj = `"${(log.projectName || '').replace(/"/g, '""')}"`;
-        const geoLoc = `"${(log.geoLoc || '').replace(/"/g, '""')}"`;
-        const dates = `"${(log.date || '').replace(/"/g, '""')}"`;
-        const cat = `"${(log.category || []).join(', ').replace(/"/g, '""')}"`;
+        // Secured CSV injection inputs
+        const org = `"${sanitizeCSV(log.organization || '').replace(/"/g, '""')}"`;
+        const proj = `"${sanitizeCSV(log.projectName || '').replace(/"/g, '""')}"`;
+        const geoLoc = `"${sanitizeCSV(log.geoLoc || '').replace(/"/g, '""')}"`;
+        const dates = `"${sanitizeCSV(log.date || '').replace(/"/g, '""')}"`;
+        const cat = `"${sanitizeCSV((log.category || []).join(', ')).replace(/"/g, '""')}"`;
         const hours = log.hours;
         
         const vTypeStr = Array.isArray(log.vesselType) ? log.vesselType.join(', ') : (log.vesselType || '');
-        const fieldUnit = `"${log.fieldUnit || ''} (${vTypeStr})"`;
+        const fieldUnitCombined = log.fieldUnit ? `${log.fieldUnit} (${vTypeStr})` : '';
+        const fieldUnit = `"${sanitizeCSV(fieldUnitCombined).replace(/"/g, '""')}"`;
         
-        const systems = `"${(log.systemsUsed || []).join(', ').replace(/"/g, '""')}"`;
-        const software = `"${(log.softwareUsed || []).join(', ').replace(/"/g, '""')}"`;
-        const activity = `"${(log.activity || '').replace(/"/g, '""')}"`;
+        const systems = `"${sanitizeCSV((log.systemsUsed || []).join(', ')).replace(/"/g, '""')}"`;
+        const software = `"${sanitizeCSV((log.softwareUsed || []).join(', ')).replace(/"/g, '""')}"`;
+        const activity = `"${sanitizeCSV(log.activity || '').replace(/"/g, '""')}"`;
 
         csvRows.push([org, proj, geoLoc, dates, cat, hours, fieldUnit, systems, software, activity].join(","));
     });
