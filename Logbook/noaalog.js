@@ -7,6 +7,18 @@ const softwareList = ["N/A", "CARIS", "Charlene", "Fledermaus", "FMGT", "HYPACK"
 let projectLogs = [];
 let currentEditId = null; 
 
+// --- NATIVE FILE SAVING ---
+function nativeSaveAs(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute("href", url);
+    link.setAttribute("download", filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}
+
 window.onload = function() {
     populateDatalist('fieldUnitDatalist', fieldUnitList);
     
@@ -647,7 +659,7 @@ function exportLogbookCSV() {
 
     const userName = document.getElementById('userName').value || "Logbook";
     const blob = new Blob([csvRows.join("\n")], { type: 'text/csv' });
-    saveAs(blob, `${userName.replace(/\s+/g, '_')}_Logbook.csv`);
+    nativeSaveAs(blob, `${userName.replace(/\s+/g, '_')}_Logbook.csv`);
 }
 
 // --- EXPORT LOGIC: DOCX Mega Document ---
@@ -731,7 +743,7 @@ function exportLogbookDoc() {
     const doc = new Document({ sections: [{ properties: {}, children: docChildren }] });
     Packer.toBlob(doc).then(blob => {
         const userName = document.getElementById('userName').value || "Logbook";
-        saveAs(blob, `${userName.replace(/\s+/g, '_')}_Logbook.docx`);
+        nativeSaveAs(blob, `${userName.replace(/\s+/g, '_')}_Logbook.docx`);
     });
 }
 
